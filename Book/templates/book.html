@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap проект</title>
+{% extends "base.html" %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Book store</a>
-    </div>
-</nav>
+{% block title %}Список книг{% endblock %}
 
-<div class="container mt-3">
+{% block content %}
+<div class="container mt-5">
     <div class="row g-3">
 
         {% for book in books %}
@@ -42,12 +31,12 @@
 
                             {% if book.stock > 0 %}
                                 <span class="badge bg-success">
-                  {{ book.stock }} шт.
-                </span>
+                                    {{ book.stock }} шт.
+                                </span>
                             {% else %}
                                 <span class="badge bg-danger">
-                  Нет в наличии
-                </span>
+                                    Нет в наличии
+                                </span>
                             {% endif %}
 
                         </p>
@@ -55,6 +44,63 @@
                         <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">
                             Узнать больше
                         </a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#staticBackdrop{{ book.id }}">
+                            Изменить
+                        </button>
+
+
+                        <div class="modal fade" id="staticBackdrop{{ book.id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Изменить книгу</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editForm{{ book.id }}" method="POST" action="{% url 'book_update' book.id %}">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="{{ book.id }}" class="form-label">Название</label>
+                                                <input type="text" id="{{ book.id }}" name="title" value="{{ book.title }}" class="form-control"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="{{ book.id }}" class="form-label">Автор</label>
+                                                <input type="text" id="{{ book.id }}" name="author" value="{{ book.author }}" class="form-control"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="{{ book.id }}" class="form-label">Год выпуска</label>
+                                                <input type="date" id="{{ book.id }}" name="year_of_manufacture" value="{{ book.year_of_manufacture|date:'Y-m-d' }}" class="form-control"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="{{ book.id }}" class="form-label">Цена</label>
+                                                <input type="number" id="{{ book.id }}" name="price" value="{{ book.price }}" step="0.01" class="form-control"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="{{ book.id }}" class="form-label">Описание</label>
+                                                <textarea id="{{ book.id }}" name="description" class="form-control" rows="3">{{ book.description }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="{{ book.id }}" class="form-label">Запас</label>
+                                                <input type="number" id="{{ book.id }}" name="stock" value="{{ book.stock }}" class="form-control"/>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="{{ book.id }}" class="form-label">Категория</label>
+                                                <select id="{{ book.id }}" name="category" class="form-control">
+                                                    <option value="{{ book.category.id }}">{{ book.category }}</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                        <button type="submit" form="editForm{{ book.id }}" class="btn btn-primary">Сохранить</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -65,6 +111,4 @@
 
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}
