@@ -44,7 +44,13 @@
                         <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">
                             Узнать больше
                         </a>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+
+                        <form method="POST" action="{% url 'book_delete' book.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop{{ book.id }}">
                             Изменить
                         </button>
