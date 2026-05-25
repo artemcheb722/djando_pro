@@ -27,9 +27,7 @@ class BookDetailView(DetailView):
   template_name = 'book_detail.html'
   context_object_name = 'book'
 
-  def get_query_set(self):
-    queryset = super().get_queryset()
-    user_search_query = self.request.POST.get("q", None)
+
 
 
 
