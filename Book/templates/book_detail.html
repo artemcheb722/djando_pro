@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">BookStore</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <a href="/books/" class="btn btn-secondary mb-3">← Назад к каталогу</a>
+
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">{{ book.title }}</h1>
+                <h5 class="card-subtitle mb-3 text-muted">Автор: {{ book.author }}</h5>
+                <h5 class="card-subtitle mb-3 text-muted">Категория: {{ book.category }}</h5>
+                <p class="card-text">{{ book.description }}</p>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Ціна:</strong> <span class="text-success">{{ book.price }} ₴</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Запас:</strong> {{ book.stock }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
