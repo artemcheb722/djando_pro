@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from Book.views import BookListView, BookCreateView, BookDetailView, BookUpdateView, BookDeleteView
-
+from users.views import register_view, login_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +26,10 @@ urlpatterns = [
     path('books/create/', BookCreateView.as_view(), name='book_create'),
     path('books/<int:pk>/', BookDetailView.as_view(), name='book_detail'),
     path('books/<int:pk>/update_book', BookUpdateView.as_view(), name='book_update'),
-    path('books/<int:pk>/delete_book', BookDeleteView.as_view(), name='book_delete')
+    path('books/<int:pk>/delete_book', BookDeleteView.as_view(), name='book_delete'),
+    path('register/', register_view, name='register'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
 ]
 
 if settings.DEBUG:
