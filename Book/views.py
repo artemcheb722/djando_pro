@@ -22,6 +22,7 @@ class BookListView(ListView):
     return queryset
 
 
+
 class BookDetailView(DetailView):
   model = Book
   template_name = 'book_detail.html'
@@ -41,6 +42,7 @@ class BookCreateView(CreateView):
 
 class BookUpdateView(UpdateView):
   model = Book
+  template_name = 'book.html'
   fields = ['title', 'author', 'year_of_manufacture', 'price', 'description', 'stock', 'category']
   success_url = reverse_lazy('book_list')
 
