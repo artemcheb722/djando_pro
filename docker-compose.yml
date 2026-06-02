@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    container_name: web
+    hostname: web
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: >
+      sh -c "
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+    networks:
+      - main_network
+
+
+networks:
+  main_network:
+    driver: bridge
