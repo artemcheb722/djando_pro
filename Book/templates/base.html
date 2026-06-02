@@ -15,12 +15,19 @@
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addBookModal">
             Добавить книгу
         </button>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger">Выйти</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary">Войти</a>
+            <a href="{% url 'register' %}" class="btn btn-outline-success">Зарегистрироваться</a>
+        {% endif %}
         <form method="GET" action="{% url 'book_list' %}">
             <input type="text" name="q" placeholder="Search books" value="{{ request.GET.q }}">
             <button type="submit">Search</button>
         </form>
     </div>
 </nav>
+
 
 
 <div class="modal fade" id="addBookModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
