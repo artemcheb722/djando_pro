@@ -35,12 +35,28 @@ services:
     networks:
       - main_network
 
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - main_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+
 volumes:
   static_files:
     driver: local
   media_files:
     driver: local
   postgres_datastorage:
+    driver: local
+  redis_data:
     driver: local
 
 networks:
