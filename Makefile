@@ -6,7 +6,7 @@ build:
 	${DC} build
 
 up:
-	${DC} up -d
+	${DC} up
 
 down:
 	${DC} down
