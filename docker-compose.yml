@@ -10,14 +10,44 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - static_files:/app/staticfiles
+      - media_files:/app/media
     command: >
       sh -c "
       python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
       python manage.py runserver 0.0.0.0:8000
       "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/admin/login/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     networks:
       - main_network
 
+  database:
+    image: postgres:16-alpine
+    container_name: database
+    hostname: local_database
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "6655:5432"
+    volumes:
+      - postgres_datastorage:/var/lib/postgresql/data
+    networks:
+      - main_network
+
+volumes:
+  static_files:
+    driver: local
+  media_files:
+    driver: local
+  postgres_datastorage:
+    driver: local
 
 networks:
   main_network:
