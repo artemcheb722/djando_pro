@@ -3,104 +3,117 @@
 {% block title %}Список книг{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row g-3">
+    <div class="container mt-5">
+        <div class="row g-3">
 
-        {% for book in books %}
-        <div class="col-md-4">
-            <div class="card border-primary h-100 shadow-sm">
-                <div class="card-body">
+            {% for book in books %}
+                <div class="col-md-4">
+                    <div class="card border-primary h-100 shadow-sm">
+                        <div class="card-body">
 
-                    <h5 class="card-title">{{ book.title }} - {{ book.year_of_manufacture }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Автор: {{ book.author }}</h6>
-                    <p class="card-text">{{ book.description }}</p>
+                            <h5 class="card-title">{{ book.title }} - {{ book.year_of_manufacture }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Автор: {{ book.author }}</h6>
+                            <p class="card-text">{{ book.description }}</p>
 
-                    <p class="mb-2">
-                        <strong>В наличии:</strong>
-                        {% if book.stock > 0 %}
-                            <span class="badge bg-success">{{ book.stock }} шт.</span>
-                        {% else %}
-                            <span class="badge bg-danger">Нет в наличии</span>
-                        {% endif %}
-                    </p>
+                            <p class="mb-2">
+                                <strong>В наличии:</strong>
+                                {% if book.stock > 0 %}
+                                    <span class="badge bg-success">{{ book.stock }} шт.</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Нет в наличии</span>
+                                {% endif %}
+                            </p>
 
-                    <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">Узнать больше</a>
-
-
-                    <form method="POST" action="{% url 'book_delete' book.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-                    </form>
+                            <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">Узнать больше</a>
 
 
-                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#editModal{{ book.id }}">
-                        Изменить
-                    </button>
+                            <form method="POST" action="{% url 'book_delete' book.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                            </form>
 
 
-                    <div class="modal fade" id="editModal{{ book.id }}" data-bs-backdrop="static"
-                         data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5">Изменить книгу</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="editForm{{ book.id }}" method="POST" action="{% url 'book_update' book.id %}">
-                                        {% csrf_token %}
-                                        <div class="mb-3">
-                                            <label class="form-label">Название</label>
-                                            <input type="text" name="title" value="{{ book.title }}" class="form-control" required/>
+
+                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#editModal{{ book.id }}">
+                                Изменить
+                            </button>
+
+                            <a href="{% url 'cart_add' book.id %}" class="btn btn-primary btn-sm">Добавить в корзину</a>
+
+                            <div class="modal fade" id="editModal{{ book.id }}" data-bs-backdrop="static"
+                                 data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5">Изменить книгу</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Автор</label>
-                                            <input type="text" name="author" value="{{ book.author }}" class="form-control" required/>
+                                        <div class="modal-body">
+                                            <form id="editForm{{ book.id }}" method="POST"
+                                                  action="{% url 'book_update' book.id %}">
+                                                {% csrf_token %}
+                                                <div class="mb-3">
+                                                    <label class="form-label">Название</label>
+                                                    <input type="text" name="title" value="{{ book.title }}"
+                                                           class="form-control" required/>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Автор</label>
+                                                    <input type="text" name="author" value="{{ book.author }}"
+                                                           class="form-control" required/>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Год выпуска</label>
+                                                    <input type="date" name="year_of_manufacture"
+                                                           value="{{ book.year_of_manufacture|date:'Y-m-d' }}"
+                                                           class="form-control" required/>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Цена</label>
+                                                    <input type="number" name="price" value="{{ book.price }}"
+                                                           step="0.01" class="form-control" required/>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Описание</label>
+                                                    <textarea name="description" class="form-control"
+                                                              rows="3">{{ book.description }}</textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Запас</label>
+                                                    <input type="number" name="stock" value="{{ book.stock }}"
+                                                           class="form-control" required/>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Категория</label>
+                                                    <select name="category" class="form-control" required>
+                                                        {% for category in categories %}
+                                                            <option value="{{ category.id }}"
+                                                                    {% if category.id == book.category.id %}selected{% endif %}>
+                                                                {{ category.name }}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Год выпуска</label>
-                                            <input type="date" name="year_of_manufacture"
-                                                   value="{{ book.year_of_manufacture|date:'Y-m-d' }}" class="form-control" required/>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Закрыть
+                                            </button>
+                                            <button type="submit" form="editForm{{ book.id }}" class="btn btn-primary">
+                                                Сохранить
+                                            </button>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Цена</label>
-                                            <input type="number" name="price" value="{{ book.price }}" step="0.01" class="form-control" required/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Описание</label>
-                                            <textarea name="description" class="form-control" rows="3">{{ book.description }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Запас</label>
-                                            <input type="number" name="stock" value="{{ book.stock }}" class="form-control" required/>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Категория</label>
-                                            <select name="category" class="form-control" required>
-                                                {% for category in categories %}
-                                                    <option value="{{ category.id }}"
-                                                        {% if category.id == book.category.id %}selected{% endif %}>
-                                                        {{ category.name }}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                                    <button type="submit" form="editForm{{ book.id }}" class="btn btn-primary">Сохранить</button>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-
                 </div>
-            </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
 
+        </div>
     </div>
-</div>
 {% endblock %}

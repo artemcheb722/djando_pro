@@ -1,6 +1,6 @@
 DC = docker compose
 
-.PHONY: build up down shell migrate restart makemigrations
+.PHONY: build up down shell migrate restart makemigrations build-up
 
 build:
 	${DC} build
@@ -26,4 +26,5 @@ createsuperuser:
 restart:
 	${DC} down && ${DC} up -d
 
-
+build-up:
+	${DC} build && ${DC} up

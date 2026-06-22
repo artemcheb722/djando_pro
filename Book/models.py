@@ -1,6 +1,5 @@
 from django.db import models
 from users.models import User
-# Create your models here.
 
 class Book(models.Model):
     title = models.CharField(max_length=200, verbose_name="Book title")
@@ -31,7 +30,13 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=20, choices=[('paid', 'Paid'), ('unpaid', 'Unpaid')], default='unpaid')
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('completed', 'Completed'), ('canceled', 'Canceled')], default='pending')
 
+    def __str__(self):
+        return f'Order {self.id} by {self.user.username}'
+
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.quantity} of {self.book.title} in order {self.order.id}'
