@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import stripe
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     "debug_toolbar",
     "django_structlog",
+    'payments'
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -154,3 +156,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+
+PAYMENT_CLIENT = stripe.StripeClient(STRIPE_SECRET_KEY)

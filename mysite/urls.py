@@ -2,8 +2,10 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from Book.views import BookListView, BookCreateView, BookDetailView, BookUpdateView, BookDeleteView, cart_add, CartView, cart_remove, clear_cart
+from Book.views import BookListView, BookCreateView, BookDetailView, BookUpdateView, BookDeleteView, cart_add, CartView, cart_remove, clear_cart, CheckoutView
+
 from users.views import register_view, login_view, logout_view
+from payments.views import CheckoutSession, CustomerPortalView, WebhookView, CheckoutPaymentPage, checkout_success_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -19,6 +21,13 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('cart/', CartView.as_view(), name='cart'),
+    path('webhook/', WebhookView.as_view(), name='webhook'),
+    path('create-checkout-session/', CheckoutSession.as_view(), name='checkout_session'),
+    path('customer-portal/', CustomerPortalView.as_view(), name='customer_portal'),
+    path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('checkout-payment/', CheckoutPaymentPage.as_view(), name='checkout_payment'),
+    path('success.html', checkout_success_page, name='checkout_success'),
+
 
 ]
 

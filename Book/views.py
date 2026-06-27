@@ -1,4 +1,6 @@
 from django.views import View
+
+from .forms import CheckoutForm
 from .models import Book, Category
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -78,6 +80,50 @@ class CartView(ListView):
       total_price += book.item_total_price
     context['total_price'] = total_price
     return context
+
+class CheckoutView(LoginRequiredMixin, View):
+  def get(self, request):
+    cart = request.session.get('cart', {})
+
+    books_ids = [key for key in cart.keys()]
+    books = Book.objects.filter(pk__in=books_ids)
+    for itm in books:
+        itm.quantity = cart[str(itm.pk)]
+    total_price = sum(book.price * cart[str(book.pk)] for book in books)
+
+    return render(request, 'checkout.html', {'cart_items': books, 'total_price': total_price, 'form': CheckoutForm()})
+
+  def post(self, request):
+    cart = request.session.get('cart', {})
+    if not cart:
+      return redirect('book_list')
+
+    books_ids = cart.keys()
+    books = Book.objects.filter(id__in=books_ids)
+    total_price = sum(book.price * cart[str(book.pk)] for book in books)
+
+    form = CheckoutForm(request.POST)
+    if not form.is_valid():
+      return render(request, 'checkout.html', {
+        'cart_items': books,
+        'total_price': total_price,
+        'form': form,
+      })
+
+    order = form.save(commit=False)
+    order.user = request.user
+    order.total_price = total_price
+    order.save()
+
+    for cart_key in cart.keys():
+      OrderItem.objects.create(
+        order=order,
+        book=Book.objects.get(pk=int(cart_key)),
+        quantity=cart[cart_key],
+      )
+
+    request.session['cart'] = {}
+    return redirect('checkout_payment')
 
 
 def cart_view(request):

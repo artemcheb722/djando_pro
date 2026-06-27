@@ -10,12 +10,7 @@
                     <p class="card-text">Автор: {{ book.author }}</p>
                     <p class="card-text">Цена за одну книгу : {{ book.price }} ₴</p>
                     <p class="card-text">Количество: {{ book.quantity }}</p>
-                    <p class="card-text"><strong>Сумма: {{ book.item_total_price }} ₴</strong></p>
 
-                    <form method="POST" action="{% url 'cart_remove' book.id %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-                    </form>
                 </div>
             </div>
 
@@ -27,17 +22,19 @@
                 <h2 class="text-success">{{ total_price }} ₴</h2>
             </div>
         </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <form method="POST" action="{% url 'checkout_payment' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success mt-3">Оформить заказ</button>
+            </form>
+        </form>
 
         <button type="button" class="btn btn-info">
-            <a href="{% url 'checkout' %}" class="text-decoration-none text-dark">Перейти к оформлению заказа</a>
+            <a href="{% url 'cart' %}" class="text-decoration-none text-dark">Вернуться в корзину</a>
         </button>
 
-        <div class="mt-4">
-            <form method="POST" action="{% url 'clear_cart' %}" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-warning btn-lg">Очистить корзину</button>
-            </form>
-        </div>
     {% else %}
         <p class="alert alert-info">Корзина пустая</p>
     {% endif %}
