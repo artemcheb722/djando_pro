@@ -6,6 +6,7 @@ import stripe
 from django.views import View
 from django.http import JsonResponse
 from mysite import settings
+
 client = stripe.StripeClient(settings.STRIPE_SECRET_KEY)
 
 YOUR_DOMAIN = 'http://localhost:8000'

@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from Book.models import Order, OrderItem
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from payments.emails import send_order_confirmation_email
 class BookListView(ListView):
   model = Book
   template_name = 'book.html'
@@ -114,6 +114,7 @@ class CheckoutView(LoginRequiredMixin, View):
     order.user = request.user
     order.total_price = total_price
     order.save()
+    send_order_confirmation_email(order)
 
     for cart_key in cart.keys():
       OrderItem.objects.create(

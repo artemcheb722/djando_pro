@@ -160,3 +160,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 PAYMENT_CLIENT = stripe.StripeClient(STRIPE_SECRET_KEY)
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "artem.chebanyuk@gmail.com"
+EMAIL_HOST_PASSWORD = "haiyheurxyfbsubj"
+DEFAULT_FROM_EMAIL = "artem.chebanyuk@gmail.com"
