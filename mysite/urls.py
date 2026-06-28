@@ -1,35 +1,34 @@
-"""
-URL configuration for mysite project.
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-from Book.views import BookListView, BookCreateView, BookDetailView, BookUpdateView, BookDeleteView
+from Book.views import BookListView, BookCreateView, BookDetailView, BookUpdateView, BookDeleteView, cart_add, CartView, cart_remove, clear_cart, CheckoutView
+
 from users.views import register_view, login_view, logout_view
+from payments.views import CheckoutSession, CustomerPortalView, WebhookView, CheckoutPaymentPage, checkout_success_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', BookListView.as_view(), name='book_list'),
     path('books/create/', BookCreateView.as_view(), name='book_create'),
     path('books/<int:pk>/', BookDetailView.as_view(), name='book_detail'),
+    path('books/<int:pk>/add_to_cart/', cart_add, name='cart_add'),
+    path('cart/remove/<int:book_id>/', cart_remove, name='cart_remove'),
+    path('cart/clear/', clear_cart, name='clear_cart'),
     path('books/<int:pk>/update_book', BookUpdateView.as_view(), name='book_update'),
     path('books/<int:pk>/delete_book', BookDeleteView.as_view(), name='book_delete'),
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    path('cart/', CartView.as_view(), name='cart'),
+    path('webhook/', WebhookView.as_view(), name='webhook'),
+    path('create-checkout-session/', CheckoutSession.as_view(), name='checkout_session'),
+    path('customer-portal/', CustomerPortalView.as_view(), name='customer_portal'),
+    path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('checkout-payment/', CheckoutPaymentPage.as_view(), name='checkout_payment'),
+    path('success.html', checkout_success_page, name='checkout_success'),
+
+
 ]
 
 if settings.DEBUG:
