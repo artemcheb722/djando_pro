@@ -64,19 +64,20 @@ class CustomerPortalView(View):
 class WebhookView(View):
     def post(self, request):
         webhook_secret = 'whsec_12345'
-        request_data = json.loads(request.data)
+        payload = request.body
 
         if webhook_secret:
             signature = request.headers.get('stripe-signature')
             try:
                 event = client.construct_event(
-                    payload=request.data, sig_header=signature, secret=webhook_secret)
+                    payload=payload, sig_header=signature, secret=webhook_secret)
                 data = event['data']
             except Exception as e:
-                return e
+                return JsonResponse({'error': str(e)}, status=400)
 
             event_type = event['type']
         else:
+            request_data = json.loads(payload)
             data = request_data['data']
             event_type = request_data['type']
         data_object = data['object']
@@ -96,8 +97,5 @@ class WebhookView(View):
         elif event_type == 'entitlements.active_entitlement_summary.updated':
             print('Active entitlement summary updated: %s', event.id)
 
-        return jsonify({'status': 'success'})
 
-
-if __name__ == '__main__':
-    app.run(port=4242)
+        return JsonResponse({'status': 'success'})
