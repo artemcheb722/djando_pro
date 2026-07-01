@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-30 20:35+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\Book\templates\base.html:7
+msgid "Book Store"
+msgstr ""
+
+#: .\Book\templates\base.html:14
+msgid "Book store"
+msgstr ""
+
+#: .\Book\templates\base.html:16 .\Book\templates\base.html:92
+msgid "Add book"
+msgstr ""
+
+#: .\Book\templates\base.html:20
+msgid "Cart"
+msgstr ""
+
+#: .\Book\templates\base.html:23
+msgid "Logout"
+msgstr ""
+
+#: .\Book\templates\base.html:25
+msgid "Login"
+msgstr ""
+
+#: .\Book\templates\base.html:26
+msgid "Register"
+msgstr ""
+
+#: .\Book\templates\base.html:29
+msgid "Search books"
+msgstr ""
+
+#: .\Book\templates\base.html:30
+msgid "Search"
+msgstr ""
+
+#: .\Book\templates\base.html:42
+msgid "Add new book"
+msgstr ""
+
+#: .\Book\templates\base.html:50
+msgid "Title"
+msgstr ""
+
+#: .\Book\templates\base.html:55
+msgid "Author"
+msgstr ""
+
+#: .\Book\templates\base.html:60
+msgid "Year of manufacture"
+msgstr ""
+
+#: .\Book\templates\base.html:66
+msgid "Price"
+msgstr ""
+
+#: .\Book\templates\base.html:71
+msgid "Description"
+msgstr ""
+
+#: .\Book\templates\base.html:76
+msgid "Stock quantity"
+msgstr ""
+
+#: .\Book\templates\base.html:81
+msgid "Category"
+msgstr ""
+
+#: .\Book\templates\base.html:83
+msgid "Select a category"
+msgstr ""
+
+#: .\Book\templates\base.html:91
+msgid "Close"
+msgstr ""

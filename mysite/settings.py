@@ -50,6 +50,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django_structlog.middlewares.RequestMiddleware',
@@ -144,6 +145,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+LOCALE_PATHS = [BASE_DIR / 'locale']
+LANGUAGES = [
+    ('en', 'English'),
+    ('ru', 'Русский')
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -159,7 +165,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
-PAYMENT_CLIENT = stripe.StripeClient(STRIPE_SECRET_KEY)
+if STRIPE_SECRET_KEY:
+    PAYMENT_CLIENT = stripe.StripeClient(STRIPE_SECRET_KEY)
+else:
+    PAYMENT_CLIENT = None
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
@@ -168,3 +177,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "artem.chebanyuk@gmail.com"
 EMAIL_HOST_PASSWORD = "haiyheurxyfbsubj"
 DEFAULT_FROM_EMAIL = "artem.chebanyuk@gmail.com"
+
