@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block content %}
-    <h1 class="mb-4">Корзина: </h1>
+    <h1 class="mb-4">{% translate "Cart" %}: </h1>
 
     {% if cart_items %}
         {% for book in cart_items %}
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Книга: {{ book.title }}</h5>
-                    <p class="card-text">Автор: {{ book.author }}</p>
-                    <p class="card-text">Цена за одну книгу : {{ book.price }} ₴</p>
-                    <p class="card-text">Количество: {{ book.quantity }}</p>
+                    <h5 class="card-title">{% translate "Book" %}: {{ book.title }}</h5>
+                    <p class="card-text">{% translate "Author" %}: {{ book.author }}</p>
+                    <p class="card-text">{% translate "Price per book" %} : {{ book.price }} ₴</p>
+                    <p class="card-text">{% translate "Quantity" %}: {{ book.quantity }}</p>
 
                 </div>
             </div>
@@ -18,7 +19,7 @@
 
         <div class="card mt-4 bg-light">
             <div class="card-body">
-                <h5 class="card-title">Итого за заказ:</h5>
+                <h5 class="card-title">{% translate "Total for order" %}:</h5>
                 <h2 class="text-success">{{ total_price }} ₴</h2>
             </div>
         </div>
@@ -27,19 +28,19 @@
             {{ form.as_p }}
             <form method="POST" action="{% url 'checkout_payment' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-success mt-3">Оформить заказ</button>
+                <button type="submit" class="btn btn-success mt-3">{% translate "Place order" %}</button>
             </form>
         </form>
 
         <button type="button" class="btn btn-info">
-            <a href="{% url 'cart' %}" class="text-decoration-none text-dark">Вернуться в корзину</a>
+            <a href="{% url 'cart' %}" class="text-decoration-none text-dark">{% translate "Back to cart" %}</a>
         </button>
 
     {% else %}
-        <p class="alert alert-info">Корзина пустая</p>
+        <p class="alert alert-info">{% translate "Cart is empty" %}</p>
     {% endif %}
 
     </br>
-    <a href="/books/" class="btn btn-secondary mt-3">Вернуться к каталогу</a>
+    <a href="/books/" class="btn btn-secondary mt-3">{% translate "Back to catalog" %}</a>
 
 {% endblock %}

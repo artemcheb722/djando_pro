@@ -1,33 +1,34 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>{% block title %}Book Store{% endblock %}</title>
+    <title>{% block title %}{% translate "Book Store" %}{% endblock %}</title>
 </head>
 <body>
 
 
 <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand">Book store</a>
+        <a class="navbar-brand">{% translate "Book store" %}</a>
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addBookModal">
-            Добавить книгу
+            {% translate "Add book" %}
         </button>
 
         <button type="button" class="btn btn-info">
-            <a href="{% url 'cart' %}" class="text-decoration-none text-dark">Корзина</a>
+            <a href="{% url 'cart' %}" class="text-decoration-none text-dark">{% translate "Cart" %}</a>
         </button>
         {% if request.user.is_authenticated %}
-            <a href="{% url 'logout' %}" class="btn btn-outline-danger">Выйти</a>
+            <a href="{% url 'logout' %}" class="btn btn-outline-danger">{% translate "Logout" %}</a>
         {% else %}
-            <a href="{% url 'login' %}" class="btn btn-outline-primary">Войти</a>
-            <a href="{% url 'register' %}" class="btn btn-outline-success">Зарегистрироваться</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary">{% translate "Login" %}</a>
+            <a href="{% url 'register' %}" class="btn btn-outline-success">{% translate "Register" %}</a>
         {% endif %}
         <form method="GET" action="{% url 'book_list' %}">
-            <input type="text" name="q" placeholder="Search books" value="{{ request.GET.q }}">
-            <button type="submit">Search</button>
+            <input type="text" name="q" placeholder="{% translate "Search books" %}" value="{{ request.GET.q }}">
+            <button type="submit">{% translate "Search" %}</button>
         </form>
     </div>
 </nav>
@@ -39,7 +40,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Добавить новую книгу</h1>
+                <h1 class="modal-title fs-5">{% translate "Add new book" %}</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -47,40 +48,40 @@
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label for="title" class="form-label">Название</label>
+                        <label for="title" class="form-label">{% translate "Title" %}</label>
                         <input type="text" id="title" name="title" class="form-control" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="author" class="form-label">Автор</label>
+                        <label for="author" class="form-label">{% translate "Author" %}</label>
                         <input type="text" id="author" name="author" class="form-control" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="year_of_manufacture" class="form-label">Год выпуска</label>
+                        <label for="year_of_manufacture" class="form-label">{% translate "Year of manufacture" %}</label>
                         <input type="date" id="year_of_manufacture" name="year_of_manufacture" class="form-control"
                                required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="price" class="form-label">Цена</label>
+                        <label for="price" class="form-label">{% translate "Price" %}</label>
                         <input type="number" id="price" name="price" step="0.01" min="0" class="form-control" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="description" class="form-label">Описание</label>
+                        <label for="description" class="form-label">{% translate "Description" %}</label>
                         <textarea id="description" name="description" class="form-control" rows="3"></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label for="stock" class="form-label">Количество на складе</label>
+                        <label for="stock" class="form-label">{% translate "Stock quantity" %}</label>
                         <input type="number" id="stock" name="stock" min="0" class="form-control" required/>
                     </div>
 
                     <div class="mb-3">
-                        <label for="category" class="form-label">Категория</label>
+                        <label for="category" class="form-label">{% translate "Category" %}</label>
                         <select id="category" name="category" class="form-control" required>
-                            <option value="">Выберите категорию</option>
+                            <option value="">{% translate "Select a category" %}</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}">{{ category.name }}</option>
                             {% endfor %}
@@ -88,8 +89,8 @@
                     </div>
 
                     <div class="d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-success">Добавить книгу</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Close" %}</button>
+                        <button type="submit" class="btn btn-success">{% translate "Add book" %}</button>
                     </div>
 
                 </form>

@@ -3,12 +3,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from Book.views import BookListView, BookCreateView, BookDetailView, BookUpdateView, BookDeleteView, cart_add, CartView, cart_remove, clear_cart, CheckoutView
-
+from django.conf.urls.i18n import i18n_patterns
 from users.views import register_view, login_view, logout_view
 from payments.views import CheckoutSession, CustomerPortalView, WebhookView, CheckoutPaymentPage, checkout_success_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+]
+
+urlpatterns += i18n_patterns (
+
     path('books/', BookListView.as_view(), name='book_list'),
     path('books/create/', BookCreateView.as_view(), name='book_create'),
     path('books/<int:pk>/', BookDetailView.as_view(), name='book_detail'),
@@ -27,10 +31,8 @@ urlpatterns = [
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('checkout-payment/', CheckoutPaymentPage.as_view(), name='checkout_payment'),
     path('success.html', checkout_success_page, name='checkout_success'),
-
-
-]
-
+    prefix_default_language=True,
+)
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
