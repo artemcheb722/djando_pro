@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-30 20:35+0300\n"
+"POT-Creation-Date: 2026-07-05 14:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,78 +17,364 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: .\Book\templates\base.html:7
-msgid "Book Store"
-msgstr ""
 
-#: .\Book\templates\base.html:14
-msgid "Book store"
-msgstr ""
-
-#: .\Book\templates\base.html:16 .\Book\templates\base.html:92
-msgid "Add book"
-msgstr ""
-
-#: .\Book\templates\base.html:20
-msgid "Cart"
-msgstr ""
-
-#: .\Book\templates\base.html:23
-msgid "Logout"
-msgstr ""
-
-#: .\Book\templates\base.html:25
-msgid "Login"
-msgstr ""
-
-#: .\Book\templates\base.html:26
-msgid "Register"
-msgstr ""
-
-#: .\Book\templates\base.html:29
-msgid "Search books"
-msgstr ""
-
-#: .\Book\templates\base.html:30
-msgid "Search"
-msgstr ""
-
-#: .\Book\templates\base.html:42
-msgid "Add new book"
-msgstr ""
-
-#: .\Book\templates\base.html:50
+#: .\Book\forms.py:11 .\Book\templates\base.html:54
+#: .\Book\templates\book.html:58 .\Book\templates\book_detail.html:23
 msgid "Title"
 msgstr ""
 
-#: .\Book\templates\base.html:55
+#: .\Book\forms.py:12 .\Book\templates\base.html:59
+#: .\Book\templates\book.html:16 .\Book\templates\book.html:63
+#: .\Book\templates\book_detail.html:24 .\Book\templates\cart.html:11
+#: .\Book\templates\checkout.html:11 .\Book\templates\order_detail.html:41
 msgid "Author"
 msgstr ""
 
-#: .\Book\templates\base.html:60
-msgid "Year of manufacture"
-msgstr ""
-
-#: .\Book\templates\base.html:66
-msgid "Price"
-msgstr ""
-
-#: .\Book\templates\base.html:71
-msgid "Description"
-msgstr ""
-
-#: .\Book\templates\base.html:76
-msgid "Stock quantity"
-msgstr ""
-
-#: .\Book\templates\base.html:81
+#: .\Book\forms.py:13 .\Book\templates\base.html:85
+#: .\Book\templates\book.html:89 .\Book\templates\book_detail.html:25
+#: .\Book\templates\category_detail.html:9
 msgid "Category"
 msgstr ""
 
-#: .\Book\templates\base.html:83
+#: .\Book\forms.py:21
+msgid "Payment method"
+msgstr ""
+
+#: .\Book\forms.py:22
+msgid "Post office number"
+msgstr ""
+
+#: .\Book\models.py:6
+msgid "Book title"
+msgstr ""
+
+#: .\Book\models.py:7
+msgid "Author of the book"
+msgstr ""
+
+#: .\Book\models.py:9
+msgid "Book price"
+msgstr ""
+
+#: .\Book\models.py:10
+msgid "Book description"
+msgstr ""
+
+#: .\Book\models.py:11 .\Book\templates\book_detail.html:35
+msgid "Stock"
+msgstr ""
+
+#: .\Book\models.py:19
+msgid "Category name"
+msgstr ""
+
+#: .\Book\models.py:30
+msgid "Card"
+msgstr ""
+
+#: .\Book\models.py:30
+msgid "Cash"
+msgstr ""
+
+#: .\Book\models.py:31 .\Book\templates\order_detail.html:26
+#: .\Book\templates\user_orders.html:43
+msgid "Paid"
+msgstr ""
+
+#: .\Book\models.py:31
+msgid "Unpaid"
+msgstr ""
+
+#: .\Book\models.py:32 .\Book\templates\order_detail.html:16
+#: .\Book\templates\user_orders.html:34
+msgid "Pending"
+msgstr ""
+
+#: .\Book\models.py:32 .\Book\templates\order_detail.html:18
+#: .\Book\templates\user_orders.html:36
+msgid "Completed"
+msgstr ""
+
+#: .\Book\models.py:32 .\Book\templates\order_detail.html:20
+#: .\Book\templates\user_orders.html:38
+msgid "Canceled"
+msgstr ""
+
+#: .\Book\templates\base.html:8
+msgid "Book Store"
+msgstr ""
+
+#: .\Book\templates\base.html:15
+msgid "Book store"
+msgstr ""
+
+#: .\Book\templates\base.html:17 .\Book\templates\base.html:96
+msgid "Add book"
+msgstr ""
+
+#: .\Book\templates\base.html:21 .\Book\templates\checkout.html:4
+msgid "Cart"
+msgstr ""
+
+#: .\Book\templates\base.html:24
+msgid "Logout"
+msgstr ""
+
+#: .\Book\templates\base.html:26 .\users\templates\login.html:12
+msgid "Login"
+msgstr ""
+
+#: .\Book\templates\base.html:27
+msgid "Register"
+msgstr ""
+
+#: .\Book\templates\base.html:30
+msgid "Search books"
+msgstr ""
+
+#: .\Book\templates\base.html:31
+msgid "Search"
+msgstr ""
+
+#: .\Book\templates\base.html:34
+msgid "Your previous orders"
+msgstr ""
+
+#: .\Book\templates\base.html:46
+msgid "Add new book"
+msgstr ""
+
+#: .\Book\templates\base.html:64 .\Book\templates\book.html:68
+msgid "Year of manufacture"
+msgstr ""
+
+#: .\Book\templates\base.html:70 .\Book\templates\book.html:74
+#: .\Book\templates\book_detail.html:32
+msgid "Price"
+msgstr ""
+
+#: .\Book\templates\base.html:75 .\Book\templates\book.html:79
+#: .\Book\templates\book_detail.html:26
+msgid "Description"
+msgstr ""
+
+#: .\Book\templates\base.html:80 .\Book\templates\book.html:84
+msgid "Stock quantity"
+msgstr ""
+
+#: .\Book\templates\base.html:87
 msgid "Select a category"
 msgstr ""
 
-#: .\Book\templates\base.html:91
+#: .\Book\templates\base.html:95 .\Book\templates\book.html:103
 msgid "Close"
+msgstr ""
+
+#: .\Book\templates\book.html:4
+msgid "Book list"
+msgstr ""
+
+#: .\Book\templates\book.html:20
+msgid "In stock"
+msgstr ""
+
+#: .\Book\templates\book.html:22
+#, python-format
+msgid "%(counter)s pc."
+msgid_plural "%(counter)s pcs."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\Book\templates\book.html:24
+msgid "Out of stock"
+msgstr ""
+
+#: .\Book\templates\book.html:28
+msgid "Learn more"
+msgstr ""
+
+#: .\Book\templates\book.html:33 .\Book\templates\cart.html:18
+msgid "Delete"
+msgstr ""
+
+#: .\Book\templates\book.html:40
+msgid "Edit"
+msgstr ""
+
+#: .\Book\templates\book.html:43
+msgid "Add to cart"
+msgstr ""
+
+#: .\Book\templates\book.html:50
+msgid "Edit book"
+msgstr ""
+
+#: .\Book\templates\book.html:106
+msgid "Save"
+msgstr ""
+
+#: .\Book\templates\book_detail.html:19 .\Book\templates\cart.html:47
+#: .\Book\templates\checkout.html:44
+msgid "Back to catalog"
+msgstr ""
+
+#: .\Book\templates\cart.html:10 .\Book\templates\checkout.html:10
+#: .\Book\templates\order_detail.html:40
+msgid "Book"
+msgstr ""
+
+#: .\Book\templates\cart.html:12
+msgid "Price per one Book"
+msgstr ""
+
+#: .\Book\templates\cart.html:13 .\Book\templates\checkout.html:13
+#: .\Book\templates\order_detail.html:43
+msgid "Quantity"
+msgstr ""
+
+#: .\Book\templates\cart.html:14
+msgid "Sum"
+msgstr ""
+
+#: .\Book\templates\cart.html:27
+msgid "Order total"
+msgstr ""
+
+#: .\Book\templates\cart.html:28
+msgid "Total price"
+msgstr ""
+
+#: .\Book\templates\cart.html:33
+msgid "Proceed to Checkout"
+msgstr ""
+
+#: .\Book\templates\cart.html:39
+msgid "Empty the cart"
+msgstr ""
+
+#: .\Book\templates\cart.html:43
+msgid "The cart is empty"
+msgstr ""
+
+#: .\Book\templates\category_detail.html:10
+msgid "Books found"
+msgstr ""
+
+#: .\Book\templates\category_detail.html:14
+msgid "No description"
+msgstr ""
+
+#: .\Book\templates\category_detail.html:24
+#: .\Book\templates\order_detail.html:32 .\Book\templates\order_detail.html:52
+#: .\Book\templates\user_orders.html:12 .\Book\templates\user_orders.html:48
+msgid "UAH"
+msgstr ""
+
+#: .\Book\templates\category_detail.html:26
+#: .\Book\templates\user_orders.html:51
+msgid "Details"
+msgstr ""
+
+#: .\Book\templates\category_detail.html:34
+msgid "There are no books in this category yet."
+msgstr ""
+
+#: .\Book\templates\checkout.html:12
+msgid "Price per book"
+msgstr ""
+
+#: .\Book\templates\checkout.html:22
+msgid "Total for order"
+msgstr ""
+
+#: .\Book\templates\checkout.html:31
+msgid "Place order"
+msgstr ""
+
+#: .\Book\templates\checkout.html:36
+msgid "Back to cart"
+msgstr ""
+
+#: .\Book\templates\checkout.html:40
+msgid "Cart is empty"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:4 .\Book\templates\order_detail.html:9
+msgid "Order"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:13 .\Book\templates\user_orders.html:20
+msgid "Date"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:14 .\Book\templates\user_orders.html:21
+msgid "Status"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:23 .\Book\templates\user_orders.html:22
+msgid "Payment"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:28 .\Book\templates\user_orders.html:45
+msgid "Not paid"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:31
+msgid "Post office branch"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:32 .\Book\templates\user_orders.html:23
+msgid "Total"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:36
+msgid "Items in order"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:42
+msgid "Price per unit"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:44
+msgid "Subtotal"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:58
+msgid "No items"
+msgstr ""
+
+#: .\Book\templates\order_detail.html:64
+msgid "Back to my orders"
+msgstr ""
+
+#: .\Book\templates\user_orders.html:4 .\Book\templates\user_orders.html:9
+msgid "My orders"
+msgstr ""
+
+#: .\Book\templates\user_orders.html:11
+msgid "Total orders"
+msgstr ""
+
+#: .\Book\templates\user_orders.html:12
+msgid "Total amount"
+msgstr ""
+
+#: .\Book\templates\user_orders.html:59
+msgid "You have no orders yet."
+msgstr ""
+
+#: .\users\forms.py:13
+msgid "Username"
+msgstr ""
+
+#: .\users\forms.py:14
+msgid "Password"
+msgstr ""
+
+#: .\users\forms.py:15
+msgid "Confirm password"
+msgstr ""
+
+#: .\users\templates\register.html:12
+msgid "Sign up"
 msgstr ""

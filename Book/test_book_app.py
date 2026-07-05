@@ -39,7 +39,7 @@ def test_category_str(category):
 
 
 def test_book_str(book):
-    assert str(book) == f"Book {book.id} - Дюна"
+    assert str(book) == f"Book {book.id} - lgkgk"
 
 
 def test_book_default_stock_zero(category):
