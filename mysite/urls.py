@@ -21,6 +21,11 @@ from payments.views import CheckoutSession, CustomerPortalView, WebhookView, Che
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('webhook/', WebhookView.as_view(), name='webhook'),
+    path('create-checkout-session/', CheckoutSession.as_view(), name='checkout_session'),
+    path('customer-portal/', CustomerPortalView.as_view(), name='customer_portal'),
+    path('checkout-payment/', CheckoutPaymentPage.as_view(), name='checkout_payment'),
+    path('success.html', checkout_success_page, name='checkout_success'),
 ]
 
 urlpatterns += i18n_patterns(
