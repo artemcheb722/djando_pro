@@ -12,7 +12,7 @@
 
 <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand">{% translate "Book store" %}</a>
+        <a class="navbar-brand" href="{% url 'book_list' %}">{% translate "Book store" %}</a>
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#addBookModal">
             {% translate "Add book" %}
         </button>
@@ -30,6 +30,9 @@
             <input type="text" name="q" placeholder="{% translate "Search books" %}" value="{{ request.GET.q }}">
             <button type="submit">{% translate "Search" %}</button>
         </form>
+        <button type="button" class="btn btn-secondary">
+            <a href="{% url 'user_orders' %}" class="text-decoration-none text-dark">{% translate "Your previous orders" %}</a>
+        </button>
     </div>
 </nav>
 

@@ -1,6 +1,6 @@
 DC = docker compose
 
-.PHONY: build up down shell migrate restart makemigrations build-up bash
+.PHONY: build up down shell migrate restart makemigrations build-up bash test
 
 build:
 	${DC} build
@@ -31,3 +31,5 @@ build-up:
 
 bash:
 	docker exec -it web bash
+test:
+	${DC} exec web pytest -v
