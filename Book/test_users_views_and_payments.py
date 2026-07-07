@@ -1,5 +1,9 @@
 import pytest
+from unittest import mock
 from django.urls import reverse
+from Book.factories import OrderFactory
+from payments.emails import send_order_confirmation_email
+
 
 pytestmark = pytest.mark.django_db
 
@@ -91,3 +95,40 @@ def test_checkout_session_without_lookup_key(client):
     response = client.post(reverse("checkout_session"), {})
     assert response.status_code == 400
     assert response.json()["error"] == "Missing lookup_key"
+
+@pytest.mark.django_db
+@mock.patch('payments.emails.EmailMultiAlternatives.send')
+def test_order_sends_email(mock_send):
+    order = OrderFactory()
+    send_order_confirmation_email(order)
+    assert mock_send.called
+
+
+@pytest.mark.django_db
+@mock.patch('payments.views.client')
+def test_checkout_redirects(mock_client, client):
+    mock_client.v1.prices.list.return_value.data = [mock.Mock(id='price_123')]
+    mock_client.v1.checkout.sessions.create.return_value.url = 'https://checkout.stripe.com/pay/cs_test_123'
+
+    response = client.post(reverse('checkout_session'), {'lookup_key': 'pro_monthly'})
+
+    assert response.status_code == 302
+    assert response.url == 'https://checkout.stripe.com/pay/cs_test_123'
+
+
+@pytest.mark.django_db
+@mock.patch('payments.views.client')
+def test_webhook_ok(mock_client, client):
+    mock_client.construct_event.return_value = {
+        'type': 'checkout.session.completed',
+        'data': {'object': {}},
+    }
+
+    response = client.post(
+        reverse('webhook'),
+        data='{}',
+        content_type='application/json',
+        HTTP_STRIPE_SIGNATURE='sig',
+    )
+
+    assert response.status_code == 200

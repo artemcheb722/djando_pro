@@ -6,3 +6,4 @@ stripe
 pytest-django
 asyncio
 pytest-cov
+factory-boy
