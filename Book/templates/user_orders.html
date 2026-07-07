@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% translate "My orders" %}{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+  <h1 class="mb-3">{% translate "My orders" %}</h1>
+  <p class="text-muted">
+    {% translate "Total orders" %}: {{ orders_count }}
+    {% translate "Total amount" %}: {{ total_spent }} {% translate "UAH" %}
+  </p>
+
+  {% if orders %}
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>{% translate "Date" %}</th>
+          <th>{% translate "Status" %}</th>
+          <th>{% translate "Payment" %}</th>
+          <th>{% translate "Total" %}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created_at|date:"d.m.Y H:i" }}</td>
+            <td>
+              {% if order.status == 'pending' %}
+                <span class="badge bg-warning text-dark">{% translate "Pending" %}</span>
+              {% elif order.status == 'completed' %}
+                <span class="badge bg-success">{% translate "Completed" %}</span>
+              {% else %}
+                <span class="badge bg-secondary">{% translate "Canceled" %}</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if order.payment_status == 'paid' %}
+                <span class="text-success">{% translate "Paid" %}</span>
+              {% else %}
+                <span class="text-danger">{% translate "Not paid" %}</span>
+              {% endif %}
+            </td>
+            <td>{{ order.total_price }} {% translate "UAH" %}</td>
+            <td>
+              <a href="{% url 'order_detail' order.pk %}" class="btn btn-sm btn-outline-primary">
+                {% translate "Details" %}
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>{% translate "You have no orders yet." %}</p>
+  {% endif %}
+
+</div>
+{% endblock %}

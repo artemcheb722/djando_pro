@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block content %}
     <h1 class="mb-4">Корзина: </h1>
 
@@ -6,15 +7,15 @@
         {% for book in cart_items %}
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">Книга: {{ book.title }}</h5>
-                    <p class="card-text">Автор: {{ book.author }}</p>
-                    <p class="card-text">Цена за одну книгу : {{ book.price }} ₴</p>
-                    <p class="card-text">Количество: {{ book.quantity }}</p>
-                    <p class="card-text"><strong>Сумма: {{ book.item_total_price }} ₴</strong></p>
+                    <h5 class="card-title">{% translate "Book" %}: {{ book.title }}</h5>
+                    <p class="card-text">{% translate "Author" %}: {{ book.author }}</p>
+                    <p class="card-text">{% translate "Price per one Book" %} : {{ book.price }} ₴</p>
+                    <p class="card-text">{% translate "Quantity" %}: {{ book.quantity }}</p>
+                    <p class="card-text"><strong>{% translate "Sum" %}: {{ book.item_total_price }} ₴</strong></p>
 
                     <form method="POST" action="{% url 'cart_remove' book.id %}" style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                        <button type="submit" class="btn btn-danger btn-sm">{% translate "Delete" %}</button>
                     </form>
                 </div>
             </div>
@@ -23,26 +24,26 @@
 
         <div class="card mt-4 bg-light">
             <div class="card-body">
-                <h5 class="card-title">Итого за заказ:</h5>
-                <h2 class="text-success">{{ total_price }} ₴</h2>
+                <h5 class="card-title">{% translate "Order total" %}:</h5>
+                <h2 class="text-success">{% translate "Total price" %}: {{ total_price }} ₴</h2>
             </div>
         </div>
 
         <button type="button" class="btn btn-info">
-            <a href="{% url 'checkout' %}" class="text-decoration-none text-dark">Перейти к оформлению заказа</a>
+            <a href="{% url 'checkout' %}" class="text-decoration-none text-dark">{% translate "Proceed to Checkout" %}</a>
         </button>
 
         <div class="mt-4">
             <form method="POST" action="{% url 'clear_cart' %}" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-warning btn-lg">Очистить корзину</button>
+                <button type="submit" class="btn btn-warning btn-lg">{% translate "Empty the cart" %}</button>
             </form>
         </div>
     {% else %}
-        <p class="alert alert-info">Корзина пустая</p>
+        <p class="alert alert-info">{% translate "The cart is empty" %}</p>
     {% endif %}
 
     </br>
-    <a href="/books/" class="btn btn-secondary mt-3">Вернуться к каталогу</a>
+    <a href="/books/" class="btn btn-secondary mt-3">← {% translate "Back to catalog" %}</a>
 
 {% endblock %}

@@ -8,6 +8,10 @@ from Book.models import Order, OrderItem
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from payments.emails import send_order_confirmation_email
+from django.http import HttpResponseNotFound, HttpResponseForbidden
+
+
+
 class BookListView(ListView):
   model = Book
   template_name = 'book.html'
@@ -156,3 +160,72 @@ def cart_remove(request, book_id):
 def clear_cart(request):
     request.session['cart'] = {}
     return redirect('cart')
+
+
+async def category_detail_view(request, slug):
+  request.user = await request.auser()
+
+  try:
+    category = await Category.objects.aget(slug=slug)
+  except Category.DoesNotExist:
+    return HttpResponseNotFound('Категорию не найдено')
+
+  books_qs = Book.objects.filter(category=category).order_by('title')
+
+  total_books = await books_qs.acount()
+
+  books = []
+  async for book in books_qs.aiterator():
+    books.append(book)
+
+  return render(request, 'category_detail.html', {
+    'category': category,
+    'books': books,
+    'total_books': total_books,
+  })
+
+
+async def order_detail_view(request, pk):
+  user = await request.auser()
+  request.user = user
+  if not user.is_authenticated:
+    return redirect('login')
+
+  try:
+    order = await Order.objects.select_related('user').aget(pk=pk)
+  except Order.DoesNotExist:
+    return HttpResponseNotFound('Заказ не найден')
+
+
+  items = []
+  async for item in OrderItem.objects.select_related('book').filter(order=order):
+    items.append(item)
+
+  return render(request, 'order_detail.html', {
+    'order': order,
+    'items': items,
+  })
+
+
+
+async def user_orders_view(request):
+  user = await request.auser()
+  request.user = user
+  if not user.is_authenticated:
+    return redirect('login')
+
+  orders_qs = Order.objects.filter(user=user).order_by('-created_at')
+
+  orders_count = await orders_qs.acount()
+
+  orders = []
+  total_spent = 0
+  async for order in orders_qs.aiterator():
+    orders.append(order)
+    total_spent += order.total_price
+
+  return render(request, 'user_orders.html', {
+    'orders': orders,
+    'orders_count': orders_count,
+    'total_spent': total_spent,
+  })

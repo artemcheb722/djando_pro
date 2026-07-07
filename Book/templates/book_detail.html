@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -15,23 +16,23 @@
     </nav>
 
     <div class="container mt-5 mb-5">
-        <a href="/books/" class="btn btn-secondary mb-3">← Назад к каталогу</a>
+        <a href="/books/" class="btn btn-secondary mb-3">← {% translate "Back to catalog" %}</a>
 
         <div class="card">
             <div class="card-body">
-                <h1 class="card-title">{{ book.title }}</h1>
-                <h5 class="card-subtitle mb-3 text-muted">Автор: {{ book.author }}</h5>
-                <h5 class="card-subtitle mb-3 text-muted">Категория: {{ book.category }}</h5>
-                <p class="card-text">{{ book.description }}</p>
+                <h1 class="card-title">{% translate "Title" %}: {{ book.title }}</h1>
+                <h5 class="card-subtitle mb-3 text-muted">{% translate "Author" %}: {{ book.author }}</h5>
+                <h5 class="card-subtitle mb-3 text-muted">{% translate "Category" %}: {{ book.category }}</h5>
+                <p class="card-text">{% translate "Description" %}: {{ book.description }}</p>
 
                 <hr>
 
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Ціна:</strong> <span class="text-success">{{ book.price }} ₴</span></p>
+                        <p><strong>{% translate "Price" %}</strong> <span class="text-success">{{ book.price }} ₴</span></p>
                     </div>
                     <div class="col-md-6">
-                        <p><strong>Запас:</strong> {{ book.stock }}</p>
+                        <p><strong>{% translate "Stock" %}</strong> {{ book.stock }}</p>
                     </div>
                 </div>
             </div>

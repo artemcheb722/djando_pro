@@ -3,4 +3,7 @@ django-debug-toolbar==4.2.0
 django-structlog==7.1.0
 psycopg2-binary==2.9.9
 stripe
-
+pytest-django
+asyncio
+pytest-cov
+factory-boy
