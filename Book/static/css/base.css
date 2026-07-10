@@ -1,0 +1,220 @@
+/* ==== Книжные карточки: тёмный элегантный стиль ==== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+.container.mt-5 {
+    max-width: 1100px;
+}
+
+.card.border-primary {
+    border: none !important;
+    border-radius: 14px;
+    background: #211c19;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+.card.border-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.card-body {
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #f5efe6;
+    letter-spacing: 0.2px;
+    margin-bottom: 0.35rem;
+    line-height: 1.3;
+}
+
+.card-subtitle {
+    font-size: 0.85rem;
+    color: #a89a86 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-style: normal;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    color: #c9bfb2;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ==== Наличие товара ==== */
+
+.badge.bg-success,
+.badge.bg-danger {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.3px;
+    padding: 0.35em 0.7em;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.badge.bg-success {
+    background-color: rgba(180, 160, 110, 0.15) !important;
+    color: #d4bd8a !important;
+    border: 1px solid rgba(212, 189, 138, 0.35);
+}
+
+.badge.bg-danger {
+    background-color: rgba(200, 90, 90, 0.15) !important;
+    color: #d68686 !important;
+    border: 1px solid rgba(214, 134, 134, 0.35);
+}
+
+/* ==== Кнопки ==== */
+
+.card-body .btn {
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.9rem;
+    margin: 0.3rem 0.3rem 0 0;
+    border: 1px solid transparent;
+    box-shadow: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-primary {
+    background: #c9a869;
+    border-color: #c9a869;
+    color: #211c19;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #b9975a;
+    border-color: #b9975a;
+    color: #211c19;
+}
+
+.btn-warning {
+    background: transparent;
+    color: #d8cdbe;
+    border-color: #4a423b;
+}
+
+.btn-warning:hover {
+    background: #2c2620;
+    border-color: #5a5148;
+    color: #f5efe6;
+}
+
+.btn-danger {
+    background: transparent;
+    color: #cf8a8a;
+    border-color: #4a3838;
+}
+
+.btn-danger:hover {
+    background: #2c2020;
+    border-color: #6b4444;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #a89a86;
+    border-color: #4a423b;
+}
+
+.btn-secondary:hover {
+    background: #2c2620;
+}
+
+/* Форма удаления не должна ломать flow кнопок */
+.card-body form[action*="delete"],
+.card-body form[style*="inline"] {
+    display: inline-block !important;
+}
+
+/* ==== Модальное окно редактирования ==== */
+
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    background: #211c19;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.modal-header {
+    border-bottom: 1px solid #3a332d;
+    padding: 1.1rem 1.5rem;
+}
+
+.modal-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #f5efe6;
+}
+
+.modal-header .btn-close {
+    filter: invert(1) brightness(1.5);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body .form-label {
+    font-weight: 500;
+    color: #c9bfb2;
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+}
+
+.modal-body .form-control {
+    border-radius: 8px;
+    border: 1px solid #4a423b;
+    background: #2c2620;
+    color: #f5efe6;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+}
+
+.modal-body .form-control:focus {
+    border-color: #c9a869;
+    box-shadow: 0 0 0 3px rgba(201, 168, 105, 0.15);
+    background: #2c2620;
+    color: #f5efe6;
+}
+
+.modal-body select.form-control option {
+    background: #2c2620;
+    color: #f5efe6;
+}
+
+.modal-footer {
+    border-top: 1px solid #3a332d;
+    padding: 1rem 1.5rem;
+}
+
+/* ==== Адаптив ==== */
+
+@media (max-width: 767px) {
+    .card-body .btn {
+        width: 100%;
+        margin: 0.3rem 0 0 0;
+    }
+}
