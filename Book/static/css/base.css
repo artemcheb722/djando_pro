@@ -1,220 +1,699 @@
-/* ==== Книжные карточки: тёмный элегантный стиль ==== */
+/* ==========================================================================
+   Bookstore — Premium UI Theme
+   A minimal, elegant override layer on top of Bootstrap.
+   Load this AFTER bootstrap.css in your base template:
+   <link rel="stylesheet" href="{% static 'css/bookstore.css' %}">
+   ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+/* --------------------------------------------------------------------------
+   1. Fonts
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-.container.mt-5 {
-    max-width: 1100px;
+/* --------------------------------------------------------------------------
+   2. Design Tokens (CSS Variables)
+   Single source of truth — the navbar previously redefined its own copies
+   of these (--nav-primary, --nav-text, --nav-border, etc). Removed; the
+   navbar now reuses the tokens below directly.
+   -------------------------------------------------------------------------- */
+:root {
+    /* Backgrounds */
+    --bs-body-bg: #F8FAFC;
+    --color-bg: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-surface-glass: rgba(255, 255, 255, 0.85); /* used by sticky navbar */
+
+    /* Brand */
+    --color-primary: #4F46E5;
+    --color-primary-hover: #4338CA;
+    --color-accent: #6366F1;
+
+    /* Text */
+    --color-text: #1F2937;
+    --color-text-muted: #6B7280;
+
+    /* Borders */
+    --color-border: #E5E7EB;
+
+    /* Status colors — soft/desaturated */
+    --color-success: #22C55E;         /* vivid, used for solid hover fills */
+    --color-success-bg: #ECFDF5;
+    --color-success-text: #15803D;
+    --color-success-border: #BBF7D0;
+
+    --color-danger: #EF4444;
+    --color-danger-soft-bg: #FEF2F2;
+    --color-danger-soft-text: #B91C1C;
+    --color-danger-soft-border: #FECACA;
+
+    --color-warning: #F59E0B;
+    --color-warning-soft-bg: #FFFBEB;
+    --color-warning-soft-text: #B45309;
+    --color-warning-soft-border: #FDE68A;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-card-hover: 0 20px 40px -12px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.06);
+    --shadow-modal: 0 25px 60px -15px rgba(15, 23, 42, 0.25);
+    --shadow-nav: 0 4px 20px rgba(15, 23, 42, 0.06);
+
+    /* Radii */
+    --radius-sm: 10px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    /* Motion */
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.18s var(--ease);
+    --transition-base: 0.28s var(--ease);
 }
 
+/* --------------------------------------------------------------------------
+   3. Base / Reset
+   -------------------------------------------------------------------------- */
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Layout / Container
+   -------------------------------------------------------------------------- */
+.container.mt-5 {
+    max-width: 1320px;
+    margin-top: 3.5rem !important;
+    margin-bottom: 4rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.row.g-3 {
+    --bs-gutter-y: 1.75rem;
+    --bs-gutter-x: 1.75rem;
+}
+
+/* Optional page heading treatment, if present */
+.container.mt-5 > h1,
+.container.mt-5 > h2 {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin-bottom: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Book Cards
+   -------------------------------------------------------------------------- */
 .card.border-primary {
-    border: none !important;
-    border-radius: 14px;
-    background: #211c19;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
 }
 
 .card.border-primary:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: #C7D2FE;
+}
+
+/* Critical fix: the modal markup lives INSIDE .card-body in this template.
+   A `transform` on an ancestor turns it into the containing block for any
+   `position: fixed` descendant (like the Bootstrap modal). If the card is
+   still hovered while its modal is open, the modal ends up positioned
+   relative to the shifted card instead of the viewport, which creates a
+   hover on/off feedback loop -> visible shaking and unreliable clicks/focus
+   inside the form fields. Disable the lift transform whenever this card
+   contains an open modal. */
+.card.border-primary:has(.modal.show):hover,
+.card.border-primary:has(.modal.show) {
+    transform: none;
 }
 
 .card-body {
-    padding: 1.75rem 1.5rem;
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
 }
 
 .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    color: #f5efe6;
-    letter-spacing: 0.2px;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+    line-height: 1.35;
     margin-bottom: 0.35rem;
-    line-height: 1.3;
 }
 
 .card-subtitle {
     font-size: 0.85rem;
-    color: #a89a86 !important;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    font-style: normal;
-    margin-bottom: 1rem;
+    font-weight: 500;
+    color: var(--color-text-muted) !important;
+    margin-bottom: 0.85rem !important;
 }
 
 .card-text {
-    color: #c9bfb2;
     font-size: 0.9rem;
+    color: var(--color-text-muted);
     line-height: 1.6;
     margin-bottom: 1.1rem;
+
+    /* Clamp to 3 lines */
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* ==== Наличие товара ==== */
+/* Stock label row */
+.card-body p.mb-2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem !important;
+    font-size: 0.85rem;
+}
 
-.badge.bg-success,
-.badge.bg-danger {
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 0.72rem;
-    letter-spacing: 0.3px;
-    padding: 0.35em 0.7em;
-    border-radius: 20px;
-    text-transform: uppercase;
+.card-body p.mb-2 strong {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   6. Badges — modern pill style
+   -------------------------------------------------------------------------- */
+.badge {
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+    padding: 0.4em 0.85em;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
 }
 
 .badge.bg-success {
-    background-color: rgba(180, 160, 110, 0.15) !important;
-    color: #d4bd8a !important;
-    border: 1px solid rgba(212, 189, 138, 0.35);
+    background-color: var(--color-success-bg) !important;
+    color: var(--color-success-text) !important;
+    border-color: var(--color-success-border);
 }
 
 .badge.bg-danger {
-    background-color: rgba(200, 90, 90, 0.15) !important;
-    color: #d68686 !important;
-    border: 1px solid rgba(214, 134, 134, 0.35);
+    background-color: var(--color-danger-soft-bg) !important;
+    color: var(--color-danger-soft-text) !important;
+    border-color: var(--color-danger-soft-border);
 }
 
-/* ==== Кнопки ==== */
-
-.card-body .btn {
-    border-radius: 8px;
-    font-weight: 500;
-    font-size: 0.8rem;
-    padding: 0.5rem 0.9rem;
-    margin: 0.3rem 0.3rem 0 0;
-    border: 1px solid transparent;
-    box-shadow: none;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-}
-
-.btn-primary {
-    background: #c9a869;
-    border-color: #c9a869;
-    color: #211c19;
+/* --------------------------------------------------------------------------
+   7. Buttons — Bootstrap-classed (.btn-*) elements used on cards/modals
+   -------------------------------------------------------------------------- */
+.btn {
     font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: -0.005em;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 1.1rem;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+                background-color var(--transition-fast), color var(--transition-fast);
 }
 
-.btn-primary:hover {
-    background: #b9975a;
-    border-color: #b9975a;
-    color: #211c19;
+.btn:active {
+    transform: scale(0.97);
 }
 
-.btn-warning {
-    background: transparent;
-    color: #d8cdbe;
-    border-color: #4a423b;
+.btn-sm {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    border-radius: var(--radius-sm);
 }
 
-.btn-warning:hover {
-    background: #2c2620;
-    border-color: #5a5148;
-    color: #f5efe6;
+/* Primary — Indigo */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(79, 70, 229, 0.15);
 }
 
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-primary-hover);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.28);
+    transform: translateY(-1px);
+}
+
+/* Danger — soft red */
 .btn-danger {
-    background: transparent;
-    color: #cf8a8a;
-    border-color: #4a3838;
+    background-color: var(--color-danger-soft-bg);
+    color: var(--color-danger-soft-text);
 }
 
-.btn-danger:hover {
-    background: #2c2020;
-    border-color: #6b4444;
+.btn-danger:hover,
+.btn-danger:focus {
+    background-color: var(--color-danger);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.25);
+    transform: translateY(-1px);
 }
 
+/* Warning — amber */
+.btn-warning {
+    background-color: var(--color-warning-soft-bg);
+    color: var(--color-warning-soft-text);
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+    background-color: var(--color-warning);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Secondary (modal close) */
 .btn-secondary {
-    background: transparent;
-    color: #a89a86;
-    border-color: #4a423b;
+    background-color: #F3F4F6;
+    color: var(--color-text-muted);
 }
 
 .btn-secondary:hover {
-    background: #2c2620;
+    background-color: #E5E7EB;
+    color: var(--color-text);
+    transform: translateY(-1px);
 }
 
-/* Форма удаления не должна ломать flow кнопок */
-.card-body form[action*="delete"],
-.card-body form[style*="inline"] {
-    display: inline-block !important;
+/* Action row spacing inside cards */
+.card-body .btn,
+.card-body form {
+    margin-top: 0.4rem;
+    margin-right: 0.4rem;
 }
 
-/* ==== Модальное окно редактирования ==== */
+.card-body a.btn,
+.card-body button.btn {
+    margin-bottom: 0.4rem;
+}
 
+/* --------------------------------------------------------------------------
+   8. Modal
+   -------------------------------------------------------------------------- */
 .modal-content {
-    border-radius: 12px;
     border: none;
-    background: #211c19;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-modal);
+    overflow: hidden;
 }
 
 .modal-header {
-    border-bottom: 1px solid #3a332d;
-    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    padding: 1.5rem 1.75rem;
 }
 
 .modal-title {
-    font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: 1.1rem;
-    color: #f5efe6;
-}
-
-.modal-header .btn-close {
-    filter: invert(1) brightness(1.5);
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
 }
 
 .modal-body {
-    padding: 1.5rem;
-}
-
-.modal-body .form-label {
-    font-weight: 500;
-    color: #c9bfb2;
-    font-size: 0.85rem;
-    margin-bottom: 0.3rem;
-}
-
-.modal-body .form-control {
-    border-radius: 8px;
-    border: 1px solid #4a423b;
-    background: #2c2620;
-    color: #f5efe6;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.875rem;
-    transition: border-color 0.2s ease;
-}
-
-.modal-body .form-control:focus {
-    border-color: #c9a869;
-    box-shadow: 0 0 0 3px rgba(201, 168, 105, 0.15);
-    background: #2c2620;
-    color: #f5efe6;
-}
-
-.modal-body select.form-control option {
-    background: #2c2620;
-    color: #f5efe6;
+    padding: 1.75rem;
 }
 
 .modal-footer {
-    border-top: 1px solid #3a332d;
-    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--color-border);
+    padding: 1.25rem 1.75rem;
 }
 
-/* ==== Адаптив ==== */
+.btn-close {
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
 
-@media (max-width: 767px) {
+.btn-close:hover {
+    opacity: 0.7;
+    transform: rotate(90deg);
+}
+
+/* Note: modal entrance animation is intentionally left to Bootstrap's own
+   .modal.fade .modal-dialog transition — adding a competing transform/opacity
+   transition here causes the dialog to jitter and can block pointer events
+   on the form fields while the two animations fight each other. */
+
+/* --------------------------------------------------------------------------
+   9. Form Controls
+   -------------------------------------------------------------------------- */
+.form-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    margin-bottom: 0.4rem;
+}
+
+.form-control,
+select.form-control,
+textarea.form-control {
+    background-color: #FAFAFB;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+                background-color var(--transition-fast);
+}
+
+.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus {
+    background-color: #fff;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: #9CA3AF;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.mb-3 {
+    margin-bottom: 1.25rem !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. Navbar — custom `.app-*` classed elements (see navbar.html)
+   Reuses the shared tokens from section 2 instead of its own copies.
+   -------------------------------------------------------------------------- */
+.app-navbar {
+    background: var(--color-surface-glass) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-nav);
+    padding: 14px 0;
+}
+
+.app-navbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.app-navbar-brand {
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: var(--color-text) !important;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+/* Animated burger toggler */
+.app-navbar-toggler {
+    border: none;
+    background: transparent;
+    box-shadow: none !important;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-fast);
+}
+
+.app-navbar-toggler:hover {
+    background: #F3F4F6;
+}
+
+.app-burger-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 2px;
+    transition: var(--transition-fast);
+    transform-origin: center;
+}
+
+.app-navbar-toggler[aria-expanded="true"] .app-burger-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.app-navbar-toggler[aria-expanded="true"] .app-burger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.app-navbar-toggler[aria-expanded="true"] .app-burger-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Collapse content */
+.app-navbar-collapse {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+}
+
+/* Search bar */
+.app-navbar-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 260px;
+    max-width: 380px;
+    margin: 0;
+}
+
+.app-search-icon {
+    position: absolute;
+    left: 14px;
+    width: 17px;
+    height: 17px;
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+.app-search-input {
+    width: 100%;
+    height: 42px;
+    border: 1px solid var(--color-border);
+    background: #F3F4F6;
+    border-radius: var(--radius-pill);
+    padding: 0 78px 0 40px;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    outline: none;
+    transition: var(--transition-fast);
+}
+
+.app-search-input::placeholder {
+    color: #9CA3AF;
+}
+
+.app-search-input:focus {
+    background: #FFFFFF;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+.app-search-submit {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    bottom: 4px;
+    padding: 0 16px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.app-search-submit:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Action buttons (pill style, distinct from Bootstrap .btn used elsewhere) */
+.app-navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.app-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 18px;
+    border-radius: var(--radius-pill);
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    white-space: nowrap;
+}
+
+.app-btn:active {
+    transform: scale(0.97);
+}
+
+.app-btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    color: #fff !important;
+    box-shadow: 0 8px 18px -8px rgba(79, 70, 229, 0.5);
+}
+
+.app-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px -8px rgba(79, 70, 229, 0.55);
+}
+
+.app-btn-warning {
+    background: var(--color-warning-soft-bg);
+    color: var(--color-warning-soft-text) !important;
+    border-color: var(--color-warning-soft-border);
+}
+
+.app-btn-warning:hover {
+    background: var(--color-warning);
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+.app-btn-ghost {
+    background: transparent;
+    color: var(--color-text) !important;
+    border-color: var(--color-border);
+}
+
+.app-btn-ghost:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary) !important;
+    transform: translateY(-2px);
+}
+
+.app-btn-outline-primary {
+    background: transparent;
+    color: var(--color-primary) !important;
+    border-color: #C7D2FE;
+}
+
+.app-btn-outline-primary:hover {
+    background: var(--color-primary);
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+.app-btn-outline-success {
+    background: transparent;
+    color: var(--color-success-text) !important;
+    border-color: var(--color-success-border);
+}
+
+.app-btn-outline-success:hover {
+    background: var(--color-success);
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+.app-btn-outline-danger {
+    background: transparent;
+    color: var(--color-danger-soft-text) !important;
+    border-color: var(--color-danger-soft-border);
+}
+
+.app-btn-outline-danger:hover {
+    background: var(--color-danger);
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .app-navbar-toggler {
+        display: flex;
+    }
+
+    .app-navbar-collapse {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 16px;
+        padding: 20px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-nav);
+        gap: 18px;
+    }
+
+    .app-navbar-search {
+        max-width: none;
+        order: 2;
+    }
+
+    .app-navbar-actions {
+        order: 1;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .app-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .container.mt-5 {
+        margin-top: 2rem !important;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .modal-body,
+    .modal-header,
+    .modal-footer {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 575.98px) {
     .card-body .btn {
         width: 100%;
-        margin: 0.3rem 0 0 0;
+        margin-right: 0;
     }
 }

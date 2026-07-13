@@ -1,0 +1,189 @@
+
+
+:root {
+    --auth-bg:         #F8FAFC;
+    --auth-card-bg:    #FFFFFF;
+    --auth-primary:    #4F46E5;
+    --auth-secondary:  #6366F1;
+    --auth-border:     #E5E7EB;
+    --auth-text:       #1F2937;
+    --auth-text-muted: #6B7280;
+    --auth-danger:     #F43F5E;
+
+    --auth-radius-lg:  18px;
+    --auth-radius-sm:  10px;
+
+    --auth-shadow-lg:  0 20px 40px -12px rgba(79,70,229,0.14), 0 8px 16px -8px rgba(17,24,39,0.06);
+    --auth-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--auth-bg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    color: var(--auth-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+
+body > form {
+    background: var(--auth-card-bg);
+    border: 1px solid var(--auth-border);
+    border-radius: var(--auth-radius-lg);
+    box-shadow: var(--auth-shadow-lg);
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 420px;
+    animation: authFadeIn 0.5s ease both;
+}
+
+@keyframes authFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+body > form::before {
+    content: "Login";
+    display: block;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--auth-text);
+    margin-bottom: 28px;
+}
+
+form p {
+    margin: 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--auth-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+form input {
+    height: 46px;
+    padding: 0 16px;
+    border: 1px solid var(--auth-border);
+    border-radius: var(--auth-radius-sm);
+    font-size: 0.95rem;
+    color: var(--auth-text);
+    background: #FFFFFF;
+    transition: var(--auth-transition);
+    outline: none;
+}
+
+form input::placeholder {
+    color: #9CA3AF;
+}
+
+form input:focus {
+    border-color: var(--auth-primary);
+    box-shadow: 0 0 0 4px rgba(79,70,229,0.12);
+}
+
+form input[type="password"]::-ms-reveal,
+form input[type="password"]::-ms-clear {
+    display: none;
+}
+
+form ul.errorlist {
+    list-style: none;
+    margin: -4px 0 0;
+    padding: 0;
+    color: var(--auth-danger);
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+form .helptext {
+    font-size: 0.8rem;
+    color: var(--auth-text-muted);
+}
+form button[type="submit"] {
+    width: 100%;
+    height: 50px;
+    margin-top: 8px;
+    border: none;
+    border-radius: var(--auth-radius-sm);
+    background: linear-gradient(135deg, var(--auth-primary), var(--auth-secondary));
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 20px -8px rgba(79,70,229,0.4);
+    transition: var(--auth-transition);
+}
+
+form button[type="submit"]:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 16px 28px -8px rgba(79,70,229,0.5);
+}
+
+form button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+.password-field-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.password-field-wrapper input {
+    width: 100%;
+    display: block;
+    padding-right: 46px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--auth-text-muted);
+    transition: var(--auth-transition);
+    padding: 0;
+    z-index: 2;
+}
+
+.password-toggle-btn:hover {
+    color: var(--auth-primary);
+    background: #EEF2FF;
+}
+
+.password-toggle-btn svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+@media (max-width: 480px) {
+    body > form {
+        padding: 32px 24px;
+    }
+}
