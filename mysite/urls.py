@@ -18,14 +18,29 @@ from Book.views import (BookListView,
 from django.conf.urls.i18n import i18n_patterns
 from users.views import register_view, login_view, logout_view
 from payments.views import CheckoutSession, CustomerPortalView, WebhookView, CheckoutPaymentPage, checkout_success_page
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework.routers import DefaultRouter
+from Book.api_views import BookViewSet, OrderViewSet, CartViewSet, CategoryViewSet
+
+
+router = DefaultRouter()
+router.register("books", BookViewSet, basename="book")
+router.register("categories", CategoryViewSet, basename="category")
+router.register("orders", OrderViewSet, basename="order")
+router.register("cart", CartViewSet, basename="cart")
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("api/", include(router.urls)),
     path('webhook/', WebhookView.as_view(), name='webhook'),
     path('create-checkout-session/', CheckoutSession.as_view(), name='checkout_session'),
     path('customer-portal/', CustomerPortalView.as_view(), name='customer_portal'),
     path('checkout-payment/', CheckoutPaymentPage.as_view(), name='checkout_payment'),
     path('success.html', checkout_success_page, name='checkout_success'),
+    path('api/auth/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 ]
 
 urlpatterns += i18n_patterns(

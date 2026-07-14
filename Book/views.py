@@ -9,7 +9,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from payments.emails import send_order_confirmation_email
 from django.http import HttpResponseNotFound, HttpResponseForbidden
-
+from rest_framework.permissions import IsAuthenticated
 
 
 class BookListView(ListView):

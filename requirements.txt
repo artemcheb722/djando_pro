@@ -7,3 +7,5 @@ pytest-django
 asyncio
 pytest-cov
 factory-boy
+djangorestframework
+djangorestframework-simplejwt
