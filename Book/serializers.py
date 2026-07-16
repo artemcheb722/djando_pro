@@ -49,4 +49,4 @@ class OrderSerializer(serializers.ModelSerializer):
             "status",
             "items",
         )
-        read_only_fields = ("created_at")
+        read_only_fields = ("created_at",)

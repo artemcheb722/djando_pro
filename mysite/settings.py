@@ -47,11 +47,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_spectacular',
     'Book',
     'users',
     "debug_toolbar",
     "django_structlog",
-    'payments'
+    'payments',
+    'rest_framework_simplejwt',
+    'corsheaders',
+
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -61,6 +65,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django_structlog.middlewares.RequestMiddleware',
@@ -202,11 +207,24 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/day',
         'user': '1000/day'
-    }
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    'http://127.0.0.1:8000',
+]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Мой Django_Pro API',
+    'DESCRIPTION': 'API для интернет-магазина книг',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }

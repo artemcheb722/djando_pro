@@ -9,3 +9,5 @@ pytest-cov
 factory-boy
 djangorestframework
 djangorestframework-simplejwt
+drf_spectacular
+django-cors-headers
