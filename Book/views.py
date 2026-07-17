@@ -1,6 +1,7 @@
 from django.views import View
 
 from .forms import CheckoutForm
+from .filters import BookFilter
 from .models import Book, Category
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -21,14 +22,13 @@ class BookListView(ListView):
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['categories'] = Category.objects.all()
+    context['filter'] = self.filterset
     return context
 
   def get_queryset(self):
     queryset = super().get_queryset()
-    user_search_query = self.request.GET.get("q", None)
-    if user_search_query:
-      queryset = queryset.filter(title__icontains=user_search_query)
-    return queryset
+    self.filterset = BookFilter(self.request.GET, queryset=queryset)
+    return self.filterset.qs
 
 
 

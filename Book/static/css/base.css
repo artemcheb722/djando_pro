@@ -1,43 +1,19 @@
-/* ==========================================================================
-   Bookstore — Premium UI Theme
-   A minimal, elegant override layer on top of Bootstrap.
-   Load this AFTER bootstrap.css in your base template:
-   <link rel="stylesheet" href="{% static 'css/bookstore.css' %}">
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   1. Fonts
-   -------------------------------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* --------------------------------------------------------------------------
-   2. Design Tokens (CSS Variables)
-   Single source of truth — the navbar previously redefined its own copies
-   of these (--nav-primary, --nav-text, --nav-border, etc). Removed; the
-   navbar now reuses the tokens below directly.
-   -------------------------------------------------------------------------- */
 :root {
-    /* Backgrounds */
     --bs-body-bg: #F8FAFC;
     --color-bg: #F8FAFC;
     --color-surface: #FFFFFF;
-    --color-surface-glass: rgba(255, 255, 255, 0.85); /* used by sticky navbar */
-
-    /* Brand */
-    --color-primary: #4F46E5;
+    --color-surface-glass: rgba(255, 255, 255, 0.85); --color-primary: #4F46E5;
     --color-primary-hover: #4338CA;
     --color-accent: #6366F1;
 
-    /* Text */
     --color-text: #1F2937;
     --color-text-muted: #6B7280;
 
-    /* Borders */
     --color-border: #E5E7EB;
 
-    /* Status colors — soft/desaturated */
-    --color-success: #22C55E;         /* vivid, used for solid hover fills */
-    --color-success-bg: #ECFDF5;
+    --color-success: #22C55E;         --color-success-bg: #ECFDF5;
     --color-success-text: #15803D;
     --color-success-border: #BBF7D0;
 
@@ -51,28 +27,22 @@
     --color-warning-soft-text: #B45309;
     --color-warning-soft-border: #FDE68A;
 
-    /* Shadows */
     --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
     --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
     --shadow-card-hover: 0 20px 40px -12px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.06);
     --shadow-modal: 0 25px 60px -15px rgba(15, 23, 42, 0.25);
     --shadow-nav: 0 4px 20px rgba(15, 23, 42, 0.06);
 
-    /* Radii */
     --radius-sm: 10px;
     --radius-md: 14px;
     --radius-lg: 20px;
     --radius-pill: 999px;
 
-    /* Motion */
     --ease: cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: 0.18s var(--ease);
     --transition-base: 0.28s var(--ease);
 }
 
-/* --------------------------------------------------------------------------
-   3. Base / Reset
-   -------------------------------------------------------------------------- */
 body {
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -81,9 +51,6 @@ body {
     letter-spacing: -0.01em;
 }
 
-/* --------------------------------------------------------------------------
-   4. Layout / Container
-   -------------------------------------------------------------------------- */
 .container.mt-5 {
     max-width: 1320px;
     margin-top: 3.5rem !important;
@@ -97,7 +64,6 @@ body {
     --bs-gutter-x: 1.75rem;
 }
 
-/* Optional page heading treatment, if present */
 .container.mt-5 > h1,
 .container.mt-5 > h2 {
     font-weight: 800;
@@ -106,9 +72,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* --------------------------------------------------------------------------
-   5. Book Cards
-   -------------------------------------------------------------------------- */
 .card.border-primary {
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -124,14 +87,6 @@ body {
     border-color: #C7D2FE;
 }
 
-/* Critical fix: the modal markup lives INSIDE .card-body in this template.
-   A `transform` on an ancestor turns it into the containing block for any
-   `position: fixed` descendant (like the Bootstrap modal). If the card is
-   still hovered while its modal is open, the modal ends up positioned
-   relative to the shifted card instead of the viewport, which creates a
-   hover on/off feedback loop -> visible shaking and unreliable clicks/focus
-   inside the form fields. Disable the lift transform whenever this card
-   contains an open modal. */
 .card.border-primary:has(.modal.show):hover,
 .card.border-primary:has(.modal.show) {
     transform: none;
@@ -165,14 +120,12 @@ body {
     line-height: 1.6;
     margin-bottom: 1.1rem;
 
-    /* Clamp to 3 lines */
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* Stock label row */
 .card-body p.mb-2 {
     display: flex;
     align-items: center;
@@ -186,9 +139,6 @@ body {
     color: var(--color-text);
 }
 
-/* --------------------------------------------------------------------------
-   6. Badges — modern pill style
-   -------------------------------------------------------------------------- */
 .badge {
     font-weight: 600;
     font-size: 0.75rem;
@@ -210,9 +160,6 @@ body {
     border-color: var(--color-danger-soft-border);
 }
 
-/* --------------------------------------------------------------------------
-   7. Buttons — Bootstrap-classed (.btn-*) elements used on cards/modals
-   -------------------------------------------------------------------------- */
 .btn {
     font-weight: 600;
     font-size: 0.85rem;
@@ -234,7 +181,6 @@ body {
     border-radius: var(--radius-sm);
 }
 
-/* Primary — Indigo */
 .btn-primary {
     background-color: var(--color-primary);
     color: #fff;
@@ -249,7 +195,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Danger — soft red */
 .btn-danger {
     background-color: var(--color-danger-soft-bg);
     color: var(--color-danger-soft-text);
@@ -263,7 +208,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Warning — amber */
 .btn-warning {
     background-color: var(--color-warning-soft-bg);
     color: var(--color-warning-soft-text);
@@ -277,7 +221,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Secondary (modal close) */
 .btn-secondary {
     background-color: #F3F4F6;
     color: var(--color-text-muted);
@@ -289,7 +232,6 @@ body {
     transform: translateY(-1px);
 }
 
-/* Action row spacing inside cards */
 .card-body .btn,
 .card-body form {
     margin-top: 0.4rem;
@@ -301,9 +243,6 @@ body {
     margin-bottom: 0.4rem;
 }
 
-/* --------------------------------------------------------------------------
-   8. Modal
-   -------------------------------------------------------------------------- */
 .modal-content {
     border: none;
     border-radius: var(--radius-lg);
@@ -341,14 +280,6 @@ body {
     transform: rotate(90deg);
 }
 
-/* Note: modal entrance animation is intentionally left to Bootstrap's own
-   .modal.fade .modal-dialog transition — adding a competing transform/opacity
-   transition here causes the dialog to jitter and can block pointer events
-   on the form fields while the two animations fight each other. */
-
-/* --------------------------------------------------------------------------
-   9. Form Controls
-   -------------------------------------------------------------------------- */
 .form-label {
     font-weight: 600;
     font-size: 0.85rem;
@@ -391,10 +322,7 @@ textarea.form-control {
     margin-bottom: 1.25rem !important;
 }
 
-/* --------------------------------------------------------------------------
-   10. Navbar — custom `.app-*` classed elements (see navbar.html)
-   Reuses the shared tokens from section 2 instead of its own copies.
-   -------------------------------------------------------------------------- */
+
 .app-navbar {
     background: var(--color-surface-glass) !important;
     backdrop-filter: blur(14px);
@@ -405,8 +333,9 @@ textarea.form-control {
 }
 
 .app-navbar-inner {
-    max-width: 1200px;
+    max-width: none;
     margin: 0 auto;
+    position: relative;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -423,7 +352,7 @@ textarea.form-control {
     flex-shrink: 0;
 }
 
-/* Animated burger toggler */
+
 .app-navbar-toggler {
     border: none;
     background: transparent;
@@ -465,23 +394,25 @@ textarea.form-control {
     transform: translateY(-7px) rotate(-45deg);
 }
 
-/* Collapse content */
+
 .app-navbar-collapse {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    flex-wrap: wrap;
-    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
 }
 
-/* Search bar */
 .app-navbar-search {
     position: relative;
     display: flex;
     align-items: center;
-    flex: 1 1 260px;
-    max-width: 380px;
+    flex: 1 1 220px;
+    min-width: 180px;
+    max-width: 300px;
     margin: 0;
 }
 
@@ -538,12 +469,24 @@ textarea.form-control {
     transform: translateY(-1px);
 }
 
-/* Action buttons (pill style, distinct from Bootstrap .btn used elsewhere) */
+
 .app-navbar-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 6px;
+    flex-wrap: nowrap;
+    min-width: 0;
+    margin-left: auto;
+}
+
+@media (min-width: 992px) {
+    .app-navbar-search {
+        position: absolute;
+        left: 50%;
+        width: min(38vw, 420px);
+        max-width: 420px;
+        transform: translateX(-50%);
+    }
 }
 
 .app-btn {
@@ -551,7 +494,7 @@ textarea.form-control {
     align-items: center;
     justify-content: center;
     height: 40px;
-    padding: 0 18px;
+    padding: 0 12px;
     border-radius: var(--radius-pill);
     font-size: 0.86rem;
     font-weight: 600;
@@ -601,6 +544,12 @@ textarea.form-control {
     transform: translateY(-2px);
 }
 
+.app-filter-trigger svg {
+    width: 17px;
+    height: 17px;
+    margin-right: 7px;
+}
+
 .app-btn-outline-primary {
     background: transparent;
     color: var(--color-primary) !important;
@@ -637,9 +586,112 @@ textarea.form-control {
     transform: translateY(-2px);
 }
 
-/* --------------------------------------------------------------------------
-   11. Responsive Adjustments
-   -------------------------------------------------------------------------- */
+
+.filter-modal .modal-content {
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-modal);
+}
+
+.filter-modal .modal-header {
+    align-items: flex-start;
+    padding: 1.5rem 1.75rem;
+    border-bottom: 1px solid var(--color-border);
+    background: linear-gradient(135deg, #EEF2FF, #FFFFFF 72%);
+}
+
+.filter-modal-eyebrow {
+    margin: 0 0 0.25rem;
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.filter-modal .modal-title {
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.filter-modal .modal-body {
+    padding: 1.5rem 1.75rem;
+}
+
+.filter-modal-description {
+    margin-bottom: 1.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.filter-modal .form-label {
+    margin-bottom: 0.45rem;
+    color: var(--color-text);
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
+.filter-modal input,
+.filter-modal select {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 0.6rem 0.8rem;
+    color: var(--color-text);
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.filter-modal input:focus,
+.filter-modal select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+.filter-modal .modal-footer {
+    gap: 0.75rem;
+    padding: 1.25rem 1.75rem;
+    border-top: 1px solid var(--color-border);
+    background: #F8FAFC;
+}
+
+.filter-reset-btn,
+.filter-apply-btn {
+    padding: 0.65rem 1.1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.filter-reset-btn {
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    background: #FFFFFF;
+}
+
+.filter-reset-btn:hover {
+    color: var(--color-text);
+    border-color: #CBD5E1;
+    background: #F8FAFC;
+}
+
+.filter-apply-btn {
+    color: #FFFFFF;
+    border: 1px solid var(--color-primary);
+    background: var(--color-primary);
+}
+
+.filter-apply-btn:hover {
+    color: #FFFFFF;
+    border-color: var(--color-primary-hover);
+    background: var(--color-primary-hover);
+}
+
+
 @media (max-width: 991.98px) {
     .app-navbar-toggler {
         display: flex;
@@ -666,6 +718,7 @@ textarea.form-control {
         order: 1;
         flex-direction: column;
         align-items: stretch;
+        margin-left: 0;
     }
 
     .app-btn {
@@ -687,6 +740,12 @@ textarea.form-control {
     .modal-body,
     .modal-header,
     .modal-footer {
+        padding: 1.25rem;
+    }
+
+    .filter-modal .modal-header,
+    .filter-modal .modal-body,
+    .filter-modal .modal-footer {
         padding: 1.25rem;
     }
 }

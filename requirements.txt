@@ -11,3 +11,5 @@ djangorestframework
 djangorestframework-simplejwt
 drf_spectacular
 django-cors-headers
+django-filter
+django-filter
