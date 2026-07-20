@@ -17,12 +17,15 @@ class BookListView(ListView):
   model = Book
   template_name = 'book.html'
   context_object_name = 'books'
-  paginate_by = 15
+  paginate_by = 20
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['categories'] = Category.objects.all()
     context['filter'] = self.filterset
+    query_params = self.request.GET.copy()
+    query_params.pop('page', None)
+    context['query_params'] = query_params.urlencode()
     return context
 
   def get_queryset(self):
