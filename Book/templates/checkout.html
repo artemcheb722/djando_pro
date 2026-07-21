@@ -1,46 +1,56 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-    <h1 class="mb-4">{% translate "Cart" %}: </h1>
+<div class="checkout-page">
+    <h1 class="mb-4">{% translate "Checkout" %}</h1>
 
     {% if cart_items %}
-        {% for book in cart_items %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{% translate "Book" %}: {{ book.title }}</h5>
-                    <p class="card-text">{% translate "Author" %}: {{ book.author }}</p>
-                    <p class="card-text">{% translate "Price per book" %} : {{ book.price }} ₴</p>
-                    <p class="card-text">{% translate "Quantity" %}: {{ book.quantity }}</p>
+    <form method="POST" action="{% url 'checkout_payment' %}">
+        {% csrf_token %}
+        <div class="checkout-layout">
 
+            <div class="checkout-main">
+                {% for book in cart_items %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{% translate "Book" %}: {{ book.title }}</h5>
+                            <p class="card-text">{% translate "Author" %}: {{ book.author }}</p>
+                            <p class="card-text">{% translate "Price per book" %}: {{ book.price }} ₴</p>
+                            <p class="card-text">{% translate "Quantity" %}: {{ book.quantity }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="checkout-shipping">
+                    <h5>{% translate "Delivery details" %}</h5>
+                    {{ form.as_p }}
                 </div>
             </div>
 
-        {% endfor %}
+            <div class="checkout-summary">
+                <p class="summary-label">{% translate "Total for order" %}</p>
+                <h2 class="summary-total">{{ total_price }} ₴</h2>
 
-        <div class="card mt-4 bg-light">
-            <div class="card-body">
-                <h5 class="card-title">{% translate "Total for order" %}:</h5>
-                <h2 class="text-success">{{ total_price }} ₴</h2>
+                <button type="submit" class="btn-place-order">{% translate "Place order" %}</button>
+
+                <a href="{% url 'cart' %}" class="btn-back-cart">{% translate "Back to cart" %}</a>
+
+                <div class="summary-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 12l2 2 4-4"></path>
+                        <circle cx="12" cy="12" r="10"></circle>
+                    </svg>
+                    <span>{% translate "Secure checkout" %}</span>
+                </div>
             </div>
+
         </div>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <form method="POST" action="{% url 'checkout_payment' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-success mt-3">{% translate "Place order" %}</button>
-            </form>
-        </form>
-
-        <button type="button" class="btn btn-info">
-            <a href="{% url 'cart' %}" class="text-decoration-none text-dark">{% translate "Back to cart" %}</a>
-        </button>
-
+    </form>
     {% else %}
-        <p class="alert alert-info">{% translate "Cart is empty" %}</p>
+        <p class="alert-info">{% translate "Cart is empty" %}</p>
     {% endif %}
 
-    </br>
-    <a href="/books/" class="btn btn-secondary mt-3">{% translate "Back to catalog" %}</a>
-
+    <a href="/books/" class="btn-back">← {% translate "Back to catalog" %}</a>
+</div>
 {% endblock %}

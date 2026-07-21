@@ -9,6 +9,7 @@
 </head>
 <body>
     <form method="post">
+        <h1 class="auth-form-title">{% translate "Login" %}</h1>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">{% translate "Login" %}</button>

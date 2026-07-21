@@ -1,49 +1,62 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block content %}
-    <h1 class="mb-4">Корзина: </h1>
+<div class="cart-page">
+    <h1 class="mb-4">{% translate "Cart" %}</h1>
 
     {% if cart_items %}
         {% for book in cart_items %}
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">{% translate "Book" %}: {{ book.title }}</h5>
-                    <p class="card-text">{% translate "Author" %}: {{ book.author }}</p>
-                    <p class="card-text">{% translate "Price per one Book" %} : {{ book.price }} ₴</p>
-                    <p class="card-text">{% translate "Quantity" %}: {{ book.quantity }}</p>
-                    <p class="card-text"><strong>{% translate "Sum" %}: {{ book.item_total_price }} ₴</strong></p>
+                    <div class="card-info">
+                        <h5 class="card-title">{% translate "Book" %}: {{ book.title }}</h5>
+                        <p class="card-text">{% translate "Author" %}: {{ book.author }}</p>
+                        <p class="card-text">{% translate "Price per one Book" %}: {{ book.price }} ₴</p>
+                        <p class="card-text">{% translate "Quantity" %}: {{ book.quantity }}</p>
+                        <p class="card-text"><strong>{% translate "Sum" %}: {{ book.item_total_price }} ₴</strong></p>
+                    </div>
 
-                    <form method="POST" action="{% url 'cart_remove' book.id %}" style="display: inline;">
+                    <form method="POST" action="{% url 'cart_remove' book.id %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">{% translate "Delete" %}</button>
+                        <button type="submit" class="btn-remove" aria-label="{% translate 'Delete' %}" title="{% translate 'Delete' %}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 7h16"></path>
+                                <path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                                <path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"></path>
+                                <g class="trash-lid">
+                                    <path d="M4 7h16"></path>
+                                </g>
+                            </svg>
+                        </button>
                     </form>
                 </div>
             </div>
-
         {% endfor %}
 
-        <div class="card mt-4 bg-light">
+        <div class="card cart-summary mt-4">
             <div class="card-body">
-                <h5 class="card-title">{% translate "Order total" %}:</h5>
-                <h2 class="text-success">{% translate "Total price" %}: {{ total_price }} ₴</h2>
+                <h5 class="card-title">{% translate "Order total" %}</h5>
+                <h2>{{ total_price }} ₴</h2>
             </div>
         </div>
 
-        <button type="button" class="btn btn-info">
-            <a href="{% url 'checkout' %}" class="text-decoration-none text-dark">{% translate "Proceed to Checkout" %}</a>
-        </button>
+        <a href="{% url 'checkout' %}" class="btn-checkout">
+            {% translate "Proceed to Checkout" %}
+        </a>
 
         <div class="mt-4">
             <form method="POST" action="{% url 'clear_cart' %}" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-warning btn-lg">{% translate "Empty the cart" %}</button>
+                <button type="submit" class="btn-clear">{% translate "Empty the cart" %}</button>
             </form>
         </div>
     {% else %}
-        <p class="alert alert-info">{% translate "The cart is empty" %}</p>
+        <p class="alert-info">{% translate "The cart is empty" %}</p>
     {% endif %}
 
-    </br>
-    <a href="/books/" class="btn btn-secondary mt-3">← {% translate "Back to catalog" %}</a>
-
+    <p class="mt-3">
+        <a href="/books/" class="btn-back">← {% translate "Back to catalog" %}</a>
+    </p>
+</div>
 {% endblock %}

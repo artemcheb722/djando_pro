@@ -50,15 +50,14 @@ body > form {
     to   { opacity: 1; transform: translateY(0); }
 }
 
-body > form::before {
-    content: "Login";
+.auth-form-title {
     display: block;
     text-align: center;
     font-size: 1.6rem;
     font-weight: 800;
     letter-spacing: -0.02em;
     color: var(--auth-text);
-    margin-bottom: 28px;
+    margin: 0 0 28px;
 }
 
 form p {
