@@ -5,7 +5,7 @@
     <h1 class="mb-4">{% translate "Checkout" %}</h1>
 
     {% if cart_items %}
-    <form method="POST" action="{% url 'checkout_payment' %}">
+    <form method="POST" action="{% url 'checkout' %}">
         {% csrf_token %}
         <div class="checkout-layout">
 

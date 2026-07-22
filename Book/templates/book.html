@@ -10,6 +10,16 @@
             {% for book in books %}
                 <div class="col-md-4">
                     <div class="card border-primary h-100 shadow-sm">
+                        {% if book.image_url %}
+                            <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }}"
+                                 style="height: 220px; object-fit: contain; background-color: #f8f9fa;">
+                        {% else %}
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted"
+                                 style="height: 220px;">
+                                {% translate "No image" %}
+                            </div>
+                        {% endif %}
+
                         <div class="card-body">
 
                             <h5 class="card-title">{{ book.title }} - {{ book.year_of_manufacture }}</h5>

@@ -10,6 +10,7 @@ class Book(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name=_("Book description"))
     stock = models.IntegerField(default=0, verbose_name=_("Stock"))
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    image_url = models.URLField(max_length=500, null=True, blank=True, verbose_name=_("Book cover image"))
 
     def __str__(self):
         return f'Book {self.id} - {self.title}'
