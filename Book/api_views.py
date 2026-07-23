@@ -2,8 +2,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Book, Category, Order
-from .serializers import BookSerializer, CategorySerializer, OrderSerializer
+from .models import Book, Category, Order, BookReview
+from .serializers import BookSerializer, CategorySerializer, OrderSerializer, BookReviewSerializer
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 
 
@@ -75,3 +75,15 @@ class CartViewSet(viewsets.ViewSet):
     def clear(self, request):
         request.session["cart"] = {}
         return Response({"detail": "Корзину очищено."})
+
+class BookReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = BookReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        book_id = self.kwargs.get("book_id")
+        return BookReview.objects.filter(book_id=book_id)
+
+    def perform_create(self, serializer):
+        book_id = self.kwargs.get("book_id")
+        serializer.save(user=self.request.user, book_id=book_id)

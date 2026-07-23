@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from .models import Book, Category, Order, OrderItem
+from .models import Book, Category, Order, OrderItem, BookReview
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -49,4 +50,13 @@ class OrderSerializer(serializers.ModelSerializer):
             "status",
             "items",
         )
+        read_only_fields = ("created_at",)
+
+class BookReviewSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    book_title = serializers.CharField(source="book.title", read_only=True)
+
+    class Meta:
+        model = BookReview
+        fields = ("id", "book", "book_title", "user", "rating", "comment", "created_at")
         read_only_fields = ("created_at",)

@@ -5,7 +5,7 @@ from .filters import BookFilter
 from .models import Book, Category
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from Book.models import Order, OrderItem
+from Book.models import Order, OrderItem, BookReview
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from payments.emails import send_order_confirmation_email
@@ -13,7 +13,8 @@ from django.http import HttpResponseNotFound, HttpResponseForbidden
 from rest_framework.permissions import IsAuthenticated
 from django import forms
 from Book.utils import upload_book_image
-
+from django.contrib import messages
+from django.db.models import Avg, Count
 
 class BookListView(ListView):
     model = Book
@@ -41,6 +42,33 @@ class BookDetailView(DetailView):
     template_name = 'book_detail.html'
     context_object_name = 'book'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['average_rating'] = self.object.reviews.aggregate(Avg('rating'))['rating__avg']
+        return context
+
+    def post(self, request, *args, **kwargs):
+        book = self.get_object()
+
+        if not request.user.is_authenticated:
+            messages.error(request, "Нужно войти, чтобы оставить отзыв")
+            return redirect('login')
+
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment')
+
+        if not rating:
+            messages.error(request, "Укажите рейтинг")
+            return redirect(request.path)
+
+        BookReview.objects.create(
+            book=book,
+            user=request.user,
+            rating=int(rating),
+            comment=comment,
+        )
+
+        return redirect(request.path)
 
 class BookCreateView(CreateView):
     model = Book
