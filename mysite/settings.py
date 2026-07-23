@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import stripe
+from datetime import timedelta
 
 
 
@@ -45,11 +46,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'drf_spectacular',
     'Book',
     'users',
     "debug_toolbar",
     "django_structlog",
-    'payments'
+    'payments',
+    'rest_framework_simplejwt',
+    'corsheaders',
+    'django_filters',
+
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -59,6 +66,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django_structlog.middlewares.RequestMiddleware',
@@ -186,3 +194,46 @@ EMAIL_HOST_USER = "artem.chebanyuk@gmail.com"
 EMAIL_HOST_PASSWORD = "haiyheurxyfbsubj"
 DEFAULT_FROM_EMAIL = "artem.chebanyuk@gmail.com"
 
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+
+}
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    'http://127.0.0.1:8000',
+]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Мой Django_Pro API',
+    'DESCRIPTION': 'API для интернет-магазина книг',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
+R2_ENDPOINT_URL = os.getenv('R2_ENDPOINT_URL')
+R2_ACCESS_KEY_ID = os.getenv('R2_ACCESS_KEY_ID')
+R2_SECRET_ACCESS_KEY = os.getenv('R2_SECRET_ACCESS_KEY')
+R2_BUCKET_NAME = os.getenv('R2_BUCKET_NAME')
+R2_PUBLIC_URL = os.getenv('R2_PUBLIC_URL')

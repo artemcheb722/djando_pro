@@ -1,6 +1,8 @@
 DC = docker compose
+LOCALE ?= ru
 
-.PHONY: build up down shell migrate restart makemigrations build-up bash test
+i18n: makemessages compilemessages
+.PHONY: build up down shell migrate restart makemigrations build-up bash test makemessages compilemessages i18n
 
 build:
 	${DC} build
@@ -19,6 +21,13 @@ migrate:
 
 makemigrations:
 	${DC} exec web python manage.py makemigrations
+
+makemessages:
+	${DC} exec web python manage.py makemessages -l ${LOCALE}
+
+compilemessages:
+	${DC} exec web python manage.py compilemessages
+
 
 createsuperuser:
 	${DC} exec web python manage.py createsuperuser

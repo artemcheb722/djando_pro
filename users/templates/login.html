@@ -1,15 +1,19 @@
 {% load i18n %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/base1.css' %}">
     <title>Login</title>
 </head>
 <body>
     <form method="post">
+        <h1 class="auth-form-title">{% translate "Login" %}</h1>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">{% translate "Login" %}</button>
     </form>
+    <script src="{% static 'js/base.js' %}"></script>
 </body>
 </html>

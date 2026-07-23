@@ -10,6 +10,16 @@
             {% for book in books %}
                 <div class="col-md-4">
                     <div class="card border-primary h-100 shadow-sm">
+                        {% if book.image_url %}
+                            <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }}"
+                                 style="height: 220px; object-fit: contain; background-color: #f8f9fa;">
+                        {% else %}
+                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted"
+                                 style="height: 220px;">
+                                {% translate "No image" %}
+                            </div>
+                        {% endif %}
+
                         <div class="card-body">
 
                             <h5 class="card-title">{{ book.title }} - {{ book.year_of_manufacture }}</h5>
@@ -115,6 +125,37 @@
                 </div>
             {% endfor %}
 
+        </div>
+    </div>
+
+    <div class="modal fade filter-modal" id="bookFiltersModal" tabindex="-1"
+         aria-labelledby="bookFiltersModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h2 class="modal-title fs-5" id="bookFiltersModalLabel">{% translate "Find books" %}</h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}"></button>
+                </div>
+                <form method="get" action="{% url 'book_list' %}">
+                    <div class="modal-body">
+                        <p class="filter-modal-description">{% translate "Choose the parameters you need and we will show matching books." %}</p>
+                        <div class="row g-3">
+                            {% for field in filter.form %}
+                                <div class="col-12 col-md-6">
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'book_list' %}" class="btn filter-reset-btn">{% translate "Reset" %}</a>
+                        <button type="submit" class="btn filter-apply-btn">{% translate "Apply filters" %}</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

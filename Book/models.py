@@ -10,6 +10,7 @@ class Book(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name=_("Book description"))
     stock = models.IntegerField(default=0, verbose_name=_("Stock"))
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    image_url = models.URLField(max_length=500, null=True, blank=True, verbose_name=_("Book cover image"))
 
     def __str__(self):
         return f'Book {self.id} - {self.title}'
@@ -41,3 +42,13 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'{self.quantity} of {self.book.title} in order {self.order.id}'
+
+class BookReview(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()
+    comment = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Review by {self.user.username} for {self.book.title}'

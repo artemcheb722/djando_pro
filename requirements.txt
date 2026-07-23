@@ -7,3 +7,12 @@ pytest-django
 asyncio
 pytest-cov
 factory-boy
+djangorestframework
+djangorestframework-simplejwt
+drf_spectacular
+django-cors-headers
+django-filter
+django-filter
+boto3
+Pillow
+django-storages
