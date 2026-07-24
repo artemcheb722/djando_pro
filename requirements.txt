@@ -16,3 +16,4 @@ django-filter
 boto3
 Pillow
 django-storages
+gunicorn
