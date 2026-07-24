@@ -16,6 +16,11 @@ from Book.utils import upload_book_image
 from django.contrib import messages
 from django.db.models import Avg, Count
 
+
+
+def render_home_page(request):
+    return render(request, 'home_page.html')
+
 class BookListView(ListView):
     model = Book
     template_name = 'book.html'

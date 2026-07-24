@@ -13,7 +13,8 @@ from Book.views import (BookListView,
                         CheckoutView,
                         category_detail_view,
                         order_detail_view,
-                        user_orders_view)
+                        user_orders_view,
+                        render_home_page)
 
 from django.conf.urls.i18n import i18n_patterns
 from users.views import register_view, login_view, logout_view
@@ -35,7 +36,8 @@ router.register("orders", OrderViewSet, basename="order")
 router.register("cart", CartViewSet, basename="cart")
 router.register("reviews", BookReviewViewSet, basename="review")
 
-
+def trigger_error(request):
+    division_by_zero = 1 / 0
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", include(router.urls)),
@@ -49,12 +51,14 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('sentry-debug/', trigger_error),
 
 ]
 
 
 
 urlpatterns += i18n_patterns(
+    path('', render_home_page, name='home'),
 
     path('books/', BookListView.as_view(), name='book_list'),
     path('books/create/', BookCreateView.as_view(), name='book_create'),
