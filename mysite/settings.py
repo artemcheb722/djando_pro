@@ -247,3 +247,16 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         send_default_pii=True,
     )
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f"redis://:{os.environ.get('REDIS_PASSWORD')}@redis:6379/1",
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+        'KEY_PREFIX': 'bookstore',
+        'TIMEOUT': 60 * 15,
+    }
+}

@@ -18,3 +18,4 @@ Pillow
 django-storages
 gunicorn
 sentry-sdk
+django-redis

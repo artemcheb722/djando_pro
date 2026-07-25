@@ -11,7 +11,8 @@ class Book(models.Model):
     stock = models.IntegerField(default=0, verbose_name=_("Stock"))
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     image_url = models.URLField(max_length=500, null=True, blank=True, verbose_name=_("Book cover image"))
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
     def __str__(self):
         return f'Book {self.id} - {self.title}'
 

@@ -1,5 +1,4 @@
 from django.views import View
-
 from .forms import CheckoutForm
 from .filters import BookFilter
 from .models import Book, Category
@@ -15,12 +14,16 @@ from django import forms
 from Book.utils import upload_book_image
 from django.contrib import messages
 from django.db.models import Avg, Count
-
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from django.core.cache import cache
 
 
 def render_home_page(request):
     return render(request, 'home_page.html')
 
+
+@method_decorator(cache_page(60 * 15, key_prefix='book_list'), name='dispatch')
 class BookListView(ListView):
     model = Book
     template_name = 'book.html'
@@ -42,14 +45,33 @@ class BookListView(ListView):
         return self.filterset.qs
 
 
+
+
+
 class BookDetailView(DetailView):
     model = Book
     template_name = 'book_detail.html'
     context_object_name = 'book'
 
+    def get_object(self, queryset=None):
+        pk = self.kwargs['pk']
+        cache_key = f'book_detail_{pk}'
+        book = cache.get(cache_key)
+        if book is None:
+            book = super().get_object(queryset)
+            cache.set(cache_key, book, timeout=60 * 15)
+        return book
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['average_rating'] = self.object.reviews.aggregate(Avg('rating'))['rating__avg']
+
+        cache_key = f'book_avg_rating_{self.object.pk}'
+        average_rating = cache.get(cache_key)
+        if average_rating is None:
+            average_rating = self.object.reviews.aggregate(Avg('rating'))['rating__avg']
+            cache.set(cache_key, average_rating, timeout=60 * 15)
+
+        context['average_rating'] = average_rating
         return context
 
     def post(self, request, *args, **kwargs):
