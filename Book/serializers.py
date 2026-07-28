@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from .models import Book, Category, Order, OrderItem, BookReview
-
+from .models import Book, BookReview, Category, Order, OrderItem
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -51,6 +50,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "items",
         )
         read_only_fields = ("created_at",)
+
 
 class BookReviewSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)

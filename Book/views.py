@@ -1,42 +1,49 @@
-from django.views import View
-from .forms import CheckoutForm
-from .filters import BookFilter
-from .models import Book, Category
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from Book.models import Order, OrderItem, BookReview
-from django.shortcuts import redirect, render
-from django.contrib.auth.mixins import LoginRequiredMixin
-from payments.emails import send_order_confirmation_email
-from django.http import HttpResponseNotFound, HttpResponseForbidden
-from rest_framework.permissions import IsAuthenticated
 from django import forms
-from Book.utils import upload_book_image
 from django.contrib import messages
-from django.db.models import Avg, Count
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
+from django.db.models import Avg
+from django.http import HttpResponseNotFound
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.cache import cache_page
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
+
+from Book.models import BookReview, Order, OrderItem
+from Book.utils import upload_book_image
+from payments.emails import send_order_confirmation_email
+
+from .filters import BookFilter
+from .forms import CheckoutForm
+from .models import Book, Category
 
 
 def render_home_page(request):
-    return render(request, 'home_page.html')
+    return render(request, "home_page.html")
 
 
-@method_decorator(cache_page(60 * 15, key_prefix='book_list'), name='dispatch')
+@method_decorator(cache_page(60 * 15, key_prefix="book_list"), name="dispatch")
 class BookListView(ListView):
     model = Book
-    template_name = 'book.html'
-    context_object_name = 'books'
+    template_name = "book.html"
+    context_object_name = "books"
     paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
-        context['filter'] = self.filterset
+        context["categories"] = Category.objects.all()
+        context["filter"] = self.filterset
         query_params = self.request.GET.copy()
-        query_params.pop('page', None)
-        context['query_params'] = query_params.urlencode()
+        query_params.pop("page", None)
+        context["query_params"] = query_params.urlencode()
         return context
 
     def get_queryset(self):
@@ -45,17 +52,14 @@ class BookListView(ListView):
         return self.filterset.qs
 
 
-
-
-
 class BookDetailView(DetailView):
     model = Book
-    template_name = 'book_detail.html'
-    context_object_name = 'book'
+    template_name = "book_detail.html"
+    context_object_name = "book"
 
     def get_object(self, queryset=None):
-        pk = self.kwargs['pk']
-        cache_key = f'book_detail_{pk}'
+        pk = self.kwargs["pk"]
+        cache_key = f"book_detail_{pk}"
         book = cache.get(cache_key)
         if book is None:
             book = super().get_object(queryset)
@@ -65,13 +69,13 @@ class BookDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        cache_key = f'book_avg_rating_{self.object.pk}'
+        cache_key = f"book_avg_rating_{self.object.pk}"
         average_rating = cache.get(cache_key)
         if average_rating is None:
-            average_rating = self.object.reviews.aggregate(Avg('rating'))['rating__avg']
+            average_rating = self.object.reviews.aggregate(Avg("rating"))["rating__avg"]
             cache.set(cache_key, average_rating, timeout=60 * 15)
 
-        context['average_rating'] = average_rating
+        context["average_rating"] = average_rating
         return context
 
     def post(self, request, *args, **kwargs):
@@ -79,10 +83,10 @@ class BookDetailView(DetailView):
 
         if not request.user.is_authenticated:
             messages.error(request, "Нужно войти, чтобы оставить отзыв")
-            return redirect('login')
+            return redirect("login")
 
-        rating = request.POST.get('rating')
-        comment = request.POST.get('comment')
+        rating = request.POST.get("rating")
+        comment = request.POST.get("comment")
 
         if not rating:
             messages.error(request, "Укажите рейтинг")
@@ -97,21 +101,30 @@ class BookDetailView(DetailView):
 
         return redirect(request.path)
 
+
 class BookCreateView(CreateView):
     model = Book
-    template_name = 'book.html'
-    fields = ['title', 'author', 'year_of_manufacture', 'price', 'description', 'stock', 'category']
-    success_url = reverse_lazy('book_list')
+    template_name = "book.html"
+    fields = [
+        "title",
+        "author",
+        "year_of_manufacture",
+        "price",
+        "description",
+        "stock",
+        "category",
+    ]
+    success_url = reverse_lazy("book_list")
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['image'] = forms.ImageField(required=False)
+        form.fields["image"] = forms.ImageField(required=False)
         return form
 
     def form_valid(self, form):
         book = form.save(commit=False)
 
-        image_file = form.cleaned_data.get('image')
+        image_file = form.cleaned_data.get("image")
         if image_file:
             book.image_url = upload_book_image(image_file)
 
@@ -121,24 +134,32 @@ class BookCreateView(CreateView):
 
 class BookUpdateView(UpdateView):
     model = Book
-    template_name = 'book.html'
-    fields = ['title', 'author', 'year_of_manufacture', 'price', 'description', 'stock', 'category']
-    success_url = reverse_lazy('book_list')
+    template_name = "book.html"
+    fields = [
+        "title",
+        "author",
+        "year_of_manufacture",
+        "price",
+        "description",
+        "stock",
+        "category",
+    ]
+    success_url = reverse_lazy("book_list")
 
 
 class BookDeleteView(DeleteView):
     model = Book
-    template_name = 'book_confirm_delete.html'
-    success_url = reverse_lazy('book_list')
+    template_name = "book_confirm_delete.html"
+    success_url = reverse_lazy("book_list")
 
 
 class CartView(ListView):
     model = Book
-    template_name = 'cart.html'
-    context_object_name = 'cart_items'
+    template_name = "cart.html"
+    context_object_name = "cart_items"
 
     def get_queryset(self):
-        cart = self.request.session.get('cart', {})
+        cart = self.request.session.get("cart", {})
         books_ids = cart.keys()
         books = Book.objects.filter(id__in=books_ids)
         for itm in books:
@@ -149,15 +170,15 @@ class CartView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         total_price = 0
-        for book in context['cart_items']:
+        for book in context["cart_items"]:
             total_price += book.item_total_price
-        context['total_price'] = total_price
+        context["total_price"] = total_price
         return context
 
 
 class CheckoutView(LoginRequiredMixin, View):
     def get(self, request):
-        cart = request.session.get('cart', {})
+        cart = request.session.get("cart", {})
 
         books_ids = [key for key in cart.keys()]
         books = Book.objects.filter(pk__in=books_ids)
@@ -165,13 +186,16 @@ class CheckoutView(LoginRequiredMixin, View):
             itm.quantity = cart[str(itm.pk)]
         total_price = sum(book.price * cart[str(book.pk)] for book in books)
 
-        return render(request, 'checkout.html',
-                      {'cart_items': books, 'total_price': total_price, 'form': CheckoutForm()})
+        return render(
+            request,
+            "checkout.html",
+            {"cart_items": books, "total_price": total_price, "form": CheckoutForm()},
+        )
 
     def post(self, request):
-        cart = request.session.get('cart', {})
+        cart = request.session.get("cart", {})
         if not cart:
-            return redirect('book_list')
+            return redirect("book_list")
 
         books_ids = cart.keys()
         books = Book.objects.filter(id__in=books_ids)
@@ -179,11 +203,15 @@ class CheckoutView(LoginRequiredMixin, View):
 
         form = CheckoutForm(request.POST)
         if not form.is_valid():
-            return render(request, 'checkout.html', {
-                'cart_items': books,
-                'total_price': total_price,
-                'form': form,
-            })
+            return render(
+                request,
+                "checkout.html",
+                {
+                    "cart_items": books,
+                    "total_price": total_price,
+                    "form": form,
+                },
+            )
 
         order = form.save(commit=False)
         order.user = request.user
@@ -198,36 +226,36 @@ class CheckoutView(LoginRequiredMixin, View):
                 quantity=cart[cart_key],
             )
 
-        request.session['cart'] = {}
-        return redirect('checkout_payment')
+        request.session["cart"] = {}
+        return redirect("checkout_payment")
 
 
 def cart_view(request):
-    cart = request.session.get('cart', {})
+    cart = request.session.get("cart", {})
     books_ids = Book.objects.filter(id__in=cart.keys())
     cart_items = Book.objects.get(pk__in=books_ids)
-    return render(request, 'cart.html', {'cart_items': cart_items, 'cart': cart})
+    return render(request, "cart.html", {"cart_items": cart_items, "cart": cart})
 
 
 def cart_add(request, pk):
     book_id = str(pk)
-    cart = request.session.get('cart', {})
+    cart = request.session.get("cart", {})
     cart[book_id] = cart.get(book_id, 0) + 1
-    request.session['cart'] = cart
-    return redirect('book_list')
+    request.session["cart"] = cart
+    return redirect("book_list")
 
 
 def cart_remove(request, book_id):
-    cart = request.session.get('cart', {})
+    cart = request.session.get("cart", {})
     if str(book_id) in cart:
         del cart[str(book_id)]
-        request.session['cart'] = cart
-    return redirect('cart')
+        request.session["cart"] = cart
+    return redirect("cart")
 
 
 def clear_cart(request):
-    request.session['cart'] = {}
-    return redirect('cart')
+    request.session["cart"] = {}
+    return redirect("cart")
 
 
 async def category_detail_view(request, slug):
@@ -236,9 +264,9 @@ async def category_detail_view(request, slug):
     try:
         category = await Category.objects.aget(slug=slug)
     except Category.DoesNotExist:
-        return HttpResponseNotFound('Категорию не найдено')
+        return HttpResponseNotFound("Категорию не найдено")
 
-    books_qs = Book.objects.filter(category=category).order_by('title')
+    books_qs = Book.objects.filter(category=category).order_by("title")
 
     total_books = await books_qs.acount()
 
@@ -246,41 +274,49 @@ async def category_detail_view(request, slug):
     async for book in books_qs.aiterator():
         books.append(book)
 
-    return render(request, 'category_detail.html', {
-        'category': category,
-        'books': books,
-        'total_books': total_books,
-    })
+    return render(
+        request,
+        "category_detail.html",
+        {
+            "category": category,
+            "books": books,
+            "total_books": total_books,
+        },
+    )
 
 
 async def order_detail_view(request, pk):
     user = await request.auser()
     request.user = user
     if not user.is_authenticated:
-        return redirect('login')
+        return redirect("login")
 
     try:
-        order = await Order.objects.select_related('user').aget(pk=pk)
+        order = await Order.objects.select_related("user").aget(pk=pk)
     except Order.DoesNotExist:
-        return HttpResponseNotFound('Заказ не найден')
+        return HttpResponseNotFound("Заказ не найден")
 
     items = []
-    async for item in OrderItem.objects.select_related('book').filter(order=order):
+    async for item in OrderItem.objects.select_related("book").filter(order=order):
         items.append(item)
 
-    return render(request, 'order_detail.html', {
-        'order': order,
-        'items': items,
-    })
+    return render(
+        request,
+        "order_detail.html",
+        {
+            "order": order,
+            "items": items,
+        },
+    )
 
 
 async def user_orders_view(request):
     user = await request.auser()
     request.user = user
     if not user.is_authenticated:
-        return redirect('login')
+        return redirect("login")
 
-    orders_qs = Order.objects.filter(user=user).order_by('-created_at')
+    orders_qs = Order.objects.filter(user=user).order_by("-created_at")
 
     orders_count = await orders_qs.acount()
 
@@ -290,8 +326,12 @@ async def user_orders_view(request):
         orders.append(order)
         total_spent += order.total_price
 
-    return render(request, 'user_orders.html', {
-        'orders': orders,
-        'orders_count': orders_count,
-        'total_spent': total_spent,
-    })
+    return render(
+        request,
+        "user_orders.html",
+        {
+            "orders": orders,
+            "orders_count": orders_count,
+            "total_spent": total_spent,
+        },
+    )
