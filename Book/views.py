@@ -217,7 +217,7 @@ class CheckoutView(LoginRequiredMixin, View):
         order.user = request.user
         order.total_price = total_price
         order.save()
-        send_order_confirmation_email(order)
+        send_order_confirmation_email.delay(order.id)
 
         for cart_key in cart.keys():
             OrderItem.objects.create(

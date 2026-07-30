@@ -1,9 +1,12 @@
+from celery import shared_task
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from Book.models import Order
 
-
-def send_order_confirmation_email(order):
+@shared_task
+def send_order_confirmation_email(order_id):
+    order = Order.objects.select_related('user').get(pk=order_id)
     subject = f"Заказ №{order.id} оформлен"
     context = {"order": order}
 

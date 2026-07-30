@@ -63,7 +63,7 @@ services:
     container_name: celery
     hostname: celery
     restart: always
-    command: celery -A config worker -l info
+    command: celery -A mysite worker -l info
     env_file:
       - .env
     volumes:
@@ -90,7 +90,7 @@ services:
     container_name: celery-beat
     hostname: celery-beat
     restart: always
-    command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    command: celery -A mysite beat -l info
     env_file:
       - .env
     volumes:
