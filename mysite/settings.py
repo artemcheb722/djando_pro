@@ -16,6 +16,7 @@ from pathlib import Path
 
 import sentry_sdk
 import stripe
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -259,3 +260,13 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Europe/Kyiv'
+
+
+
+
+CELERY_BEAT_SCHEDULE = {
+    'clear-expired-sessions-daily': {
+        'task': 'Book.tasks.clear_expired_sessions',
+        'schedule': crontab(hour=3, minute=0),
+    },
+}
