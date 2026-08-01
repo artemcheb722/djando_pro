@@ -28,6 +28,8 @@ jobs:
           POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
           POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: pytest --reuse-db
 
       - name: Upload coverage to Codecov
