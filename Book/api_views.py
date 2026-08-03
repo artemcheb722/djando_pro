@@ -1,10 +1,15 @@
-from rest_framework import viewsets, permissions
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Book, Category, Order, BookReview
-from .serializers import BookSerializer, CategorySerializer, OrderSerializer, BookReviewSerializer
+from .models import Book, BookReview, Category, Order
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
+from .serializers import (
+    BookReviewSerializer,
+    BookSerializer,
+    CategorySerializer,
+    OrderSerializer,
+)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -12,7 +17,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
     lookup_field = "slug"
-
 
 
 class BookViewSet(viewsets.ModelViewSet):
@@ -42,11 +46,13 @@ class CartViewSet(viewsets.ViewSet):
         total_price = 0
         for book in books:
             quantity = cart[str(book.id)]
-            items.append({
-                "book": BookSerializer(book).data,
-                "quantity": quantity,
-                "item_total_price": book.price * quantity,
-            })
+            items.append(
+                {
+                    "book": BookSerializer(book).data,
+                    "quantity": quantity,
+                    "item_total_price": book.price * quantity,
+                }
+            )
             total_price += book.price * quantity
 
         return Response({"items": items, "total_price": total_price})
@@ -75,6 +81,7 @@ class CartViewSet(viewsets.ViewSet):
     def clear(self, request):
         request.session["cart"] = {}
         return Response({"detail": "Корзину очищено."})
+
 
 class BookReviewViewSet(viewsets.ModelViewSet):
     serializer_class = BookReviewSerializer

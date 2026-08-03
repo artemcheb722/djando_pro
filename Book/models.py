@@ -1,19 +1,29 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from users.models import User
+
 
 class Book(models.Model):
     title = models.CharField(max_length=200, verbose_name=_("Book title"))
     author = models.CharField(max_length=200, verbose_name=_("Author of the book"))
     year_of_manufacture = models.DateField()
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Book price"))
-    description = models.TextField(null=True, blank=True, verbose_name=_("Book description"))
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name=_("Book price")
+    )
+    description = models.TextField(
+        null=True, blank=True, verbose_name=_("Book description")
+    )
     stock = models.IntegerField(default=0, verbose_name=_("Stock"))
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
-    image_url = models.URLField(max_length=500, null=True, blank=True, verbose_name=_("Book cover image"))
+    category = models.ForeignKey("Category", on_delete=models.CASCADE)
+    image_url = models.URLField(
+        max_length=500, null=True, blank=True, verbose_name=_("Book cover image")
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Updated at"))
 
     def __str__(self):
-        return f'Book {self.id} - {self.title}'
+        return f"Book {self.id} - {self.title}"
 
 
 class Category(models.Model):
@@ -23,17 +33,35 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     post_office_number = models.CharField(max_length=20)
-    payment_method = models.CharField(max_length=20, choices=[('card', _('Card')), ('cash', _('Cash'))], default='card')
-    payment_status = models.CharField(max_length=20, choices=[('paid', _('Paid')), ('unpaid', _('Unpaid'))], default='unpaid')
-    status = models.CharField(max_length=20, choices=[('pending', _('Pending')), ('completed', _('Completed')), ('canceled', _('Canceled'))], default='pending')
+    payment_method = models.CharField(
+        max_length=20,
+        choices=[("card", _("Card")), ("cash", _("Cash"))],
+        default="card",
+    )
+    payment_status = models.CharField(
+        max_length=20,
+        choices=[("paid", _("Paid")), ("unpaid", _("Unpaid"))],
+        default="unpaid",
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("pending", _("Pending")),
+            ("completed", _("Completed")),
+            ("canceled", _("Canceled")),
+        ],
+        default="pending",
+    )
 
     def __str__(self):
-        return f'Order {self.id} by {self.user.username}'
+        return f"Order {self.id} by {self.user.username}"
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -41,14 +69,15 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'{self.quantity} of {self.book.title} in order {self.order.id}'
+        return f"{self.quantity} of {self.book.title} in order {self.order.id}"
+
 
 class BookReview(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField()
     comment = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Review by {self.user.username} for {self.book.title}'
+        return f"Review by {self.user.username} for {self.book.title}"

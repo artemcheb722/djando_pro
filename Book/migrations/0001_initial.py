@@ -8,29 +8,65 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='Category name')),
-                ('slug', models.SlugField(unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=200, verbose_name="Category name"),
+                ),
+                ("slug", models.SlugField(unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Book',
+            name="Book",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200, verbose_name='Book title')),
-                ('author', models.CharField(max_length=200, verbose_name='Аuthor of the book')),
-                ('year_of_manufacture', models.DateField()),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Book price')),
-                ('description', models.TextField(blank=True, null=True, verbose_name='Book description')),
-                ('stock', models.IntegerField(default=0, verbose_name='Stock')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Book.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=200, verbose_name="Book title")),
+                (
+                    "author",
+                    models.CharField(max_length=200, verbose_name="Аuthor of the book"),
+                ),
+                ("year_of_manufacture", models.DateField()),
+                (
+                    "price",
+                    models.DecimalField(
+                        decimal_places=2, max_digits=10, verbose_name="Book price"
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="Book description"
+                    ),
+                ),
+                ("stock", models.IntegerField(default=0, verbose_name="Stock")),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="Book.category"
+                    ),
+                ),
             ],
         ),
     ]

@@ -7,7 +7,6 @@ from rest_framework.test import APIClient
 
 from Book.models import Book, Category, Order
 
-
 pytestmark = pytest.mark.django_db
 
 
@@ -48,7 +47,9 @@ def staff_user(django_user_model):
 
 @pytest.fixture
 def another_user(django_user_model):
-    return django_user_model.objects.create_user(username="another", password="pass12345")
+    return django_user_model.objects.create_user(
+        username="another", password="pass12345"
+    )
 
 
 @pytest.fixture
@@ -74,7 +75,10 @@ def test_categories_list_has_item(api_client, category):
 
 
 def test_category_detail_ok(api_client, category):
-    assert api_client.get(f"/api/categories/{category.slug}/").status_code == status.HTTP_200_OK
+    assert (
+        api_client.get(f"/api/categories/{category.slug}/").status_code
+        == status.HTTP_200_OK
+    )
 
 
 def test_category_detail_name(api_client, category):
@@ -83,24 +87,33 @@ def test_category_detail_name(api_client, category):
 
 
 def test_category_create_requires_auth(api_client):
-    response = api_client.post("/api/categories/", {"name": "Драма", "slug": "drama"}, format="json")
+    response = api_client.post(
+        "/api/categories/", {"name": "Драма", "slug": "drama"}, format="json"
+    )
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 def test_category_create_by_staff(api_client, staff_user):
     api_client.force_authenticate(user=staff_user)
-    response = api_client.post("/api/categories/", {"name": "Drama", "slug": "drama"}, format="json")
+    response = api_client.post(
+        "/api/categories/", {"name": "Drama", "slug": "drama"}, format="json"
+    )
     assert response.status_code == status.HTTP_201_CREATED
 
 
 def test_category_update_by_staff(api_client, staff_user, category):
     api_client.force_authenticate(user=staff_user)
-    response = api_client.patch(f"/api/categories/{category.slug}/", {"name": "Sci-fi"}, format="json")
+    response = api_client.patch(
+        f"/api/categories/{category.slug}/", {"name": "Sci-fi"}, format="json"
+    )
     assert response.status_code == status.HTTP_200_OK
 
 
 def test_category_delete_requires_auth(api_client, category):
-    assert api_client.delete(f"/api/categories/{category.slug}/").status_code == status.HTTP_401_UNAUTHORIZED
+    assert (
+        api_client.delete(f"/api/categories/{category.slug}/").status_code
+        == status.HTTP_401_UNAUTHORIZED
+    )
 
 
 def test_books_list_ok(api_client, book):
@@ -158,18 +171,24 @@ def test_cart_empty_has_no_items(api_client):
 
 
 def test_cart_add_item_ok(api_client, book):
-    response = api_client.post("/api/cart/add_item/", {"book_id": book.id}, format="json")
+    response = api_client.post(
+        "/api/cart/add_item/", {"book_id": book.id}, format="json"
+    )
     assert response.status_code == status.HTTP_200_OK
 
 
 def test_cart_add_item_sets_quantity(api_client, book):
-    response = api_client.post("/api/cart/add_item/", {"book_id": book.id, "quantity": 2}, format="json")
+    response = api_client.post(
+        "/api/cart/add_item/", {"book_id": book.id, "quantity": 2}, format="json"
+    )
     assert response.data["cart"][str(book.id)] == 2
 
 
 def test_cart_add_item_twice_sums_quantity(api_client, book):
     api_client.post("/api/cart/add_item/", {"book_id": book.id}, format="json")
-    response = api_client.post("/api/cart/add_item/", {"book_id": book.id}, format="json")
+    response = api_client.post(
+        "/api/cart/add_item/", {"book_id": book.id}, format="json"
+    )
     assert response.data["cart"][str(book.id)] == 2
 
 
@@ -181,18 +200,25 @@ def test_cart_list_shows_item(api_client, book):
 
 def test_cart_remove_item(api_client, book):
     api_client.post("/api/cart/add_item/", {"book_id": book.id}, format="json")
-    response = api_client.post("/api/cart/remove_item/", {"book_id": book.id}, format="json")
+    response = api_client.post(
+        "/api/cart/remove_item/", {"book_id": book.id}, format="json"
+    )
     assert str(book.id) not in response.data["cart"]
 
 
 def test_cart_remove_missing_item_ok(api_client):
-    response = api_client.post("/api/cart/remove_item/", {"book_id": 99999}, format="json")
+    response = api_client.post(
+        "/api/cart/remove_item/", {"book_id": 99999}, format="json"
+    )
     assert response.status_code == status.HTTP_200_OK
 
 
 def test_cart_clear_ok(api_client, book):
     api_client.post("/api/cart/add_item/", {"book_id": book.id}, format="json")
-    assert api_client.post("/api/cart/clear/", format="json").status_code == status.HTTP_200_OK
+    assert (
+        api_client.post("/api/cart/clear/", format="json").status_code
+        == status.HTTP_200_OK
+    )
 
 
 def test_cart_clear_removes_items(api_client, book):
@@ -211,8 +237,12 @@ def test_orders_list_ok_for_user(api_client, user):
 
 
 def test_orders_show_only_own(api_client, user, another_user):
-    own_order = Order.objects.create(user=user, total_price="100.00", post_office_number="1")
-    Order.objects.create(user=another_user, total_price="200.00", post_office_number="2")
+    own_order = Order.objects.create(
+        user=user, total_price="100.00", post_office_number="1"
+    )
+    Order.objects.create(
+        user=another_user, total_price="200.00", post_office_number="2"
+    )
     api_client.force_authenticate(user=user)
     response = api_client.get("/api/orders/")
     assert response.data["results"][0]["id"] == own_order.id
@@ -220,14 +250,18 @@ def test_orders_show_only_own(api_client, user, another_user):
 
 def test_orders_staff_sees_all(api_client, staff_user, user, another_user):
     Order.objects.create(user=user, total_price="100.00", post_office_number="1")
-    Order.objects.create(user=another_user, total_price="200.00", post_office_number="2")
+    Order.objects.create(
+        user=another_user, total_price="200.00", post_office_number="2"
+    )
     api_client.force_authenticate(user=staff_user)
     assert len(api_client.get("/api/orders/").data["results"]) == 2
 
 
 def test_login_returns_tokens(api_client, user):
     response = api_client.post(
-        "/api/auth/login/", {"username": user.username, "password": "pass12345"}, format="json"
+        "/api/auth/login/",
+        {"username": user.username, "password": "pass12345"},
+        format="json",
     )
     assert response.status_code == status.HTTP_200_OK
     assert "access" in response.data

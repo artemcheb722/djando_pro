@@ -1,18 +1,19 @@
-import pytest
 from unittest import mock
+
+import pytest
 from django.urls import reverse
+
 from Book.factories import OrderFactory
 from payments.emails import send_order_confirmation_email
-
 
 pytestmark = pytest.mark.django_db
 
 
 @pytest.fixture
 def user(django_user_model):
-    return django_user_model.objects.create_user(username="testuser", password="pass123")
-
-
+    return django_user_model.objects.create_user(
+        username="testuser", password="pass123"
+    )
 
 
 def test_register_page_loads(client):
@@ -21,21 +22,27 @@ def test_register_page_loads(client):
 
 
 def test_register_creates_user_and_logs_in(client):
-    response = client.post(reverse("register"), {
-        "username": "newuser",
-        "password1": "StrongPass123!",
-        "password2": "StrongPass123!",
-    })
+    response = client.post(
+        reverse("register"),
+        {
+            "username": "newuser",
+            "password1": "StrongPass123!",
+            "password2": "StrongPass123!",
+        },
+    )
     assert response.status_code == 302
     assert response.wsgi_request.user.is_authenticated is True
 
 
 def test_register_invalid_data_shows_error(client):
-    response = client.post(reverse("register"), {
-        "username": "",
-        "password1": "123",
-        "password2": "456",
-    })
+    response = client.post(
+        reverse("register"),
+        {
+            "username": "",
+            "password1": "123",
+            "password2": "456",
+        },
+    )
     assert response.status_code == 200
     assert "error" in response.context
 
@@ -52,19 +59,26 @@ def test_login_page_loads(client):
 
 
 def test_login_valid_credentials_redirects(client, user):
-    response = client.post(reverse("login"), {
-        "username": "testuser", "password": "pass123",
-    })
+    response = client.post(
+        reverse("login"),
+        {
+            "username": "testuser",
+            "password": "pass123",
+        },
+    )
     assert response.status_code == 302
 
 
 def test_login_invalid_credentials_shows_error(client, user):
-    response = client.post(reverse("login"), {
-        "username": "testuser", "password": "wrongpass",
-    })
+    response = client.post(
+        reverse("login"),
+        {
+            "username": "testuser",
+            "password": "wrongpass",
+        },
+    )
     assert response.status_code == 200
     assert "error" in response.context
-
 
 
 def test_logout_redirects(client, user):
@@ -96,8 +110,9 @@ def test_checkout_session_without_lookup_key(client):
     assert response.status_code == 400
     assert response.json()["error"] == "Missing lookup_key"
 
+
 @pytest.mark.django_db
-@mock.patch('payments.emails.EmailMultiAlternatives.send')
+@mock.patch("payments.emails.EmailMultiAlternatives.send")
 def test_order_sends_email(mock_send):
     order = OrderFactory()
     send_order_confirmation_email(order)
@@ -105,30 +120,32 @@ def test_order_sends_email(mock_send):
 
 
 @pytest.mark.django_db
-@mock.patch('payments.views.client')
+@mock.patch("payments.views.client")
 def test_checkout_redirects(mock_client, client):
-    mock_client.v1.prices.list.return_value.data = [mock.Mock(id='price_123')]
-    mock_client.v1.checkout.sessions.create.return_value.url = 'https://checkout.stripe.com/pay/cs_test_123'
+    mock_client.v1.prices.list.return_value.data = [mock.Mock(id="price_123")]
+    mock_client.v1.checkout.sessions.create.return_value.url = (
+        "https://checkout.stripe.com/pay/cs_test_123"
+    )
 
-    response = client.post(reverse('checkout_session'), {'lookup_key': 'pro_monthly'})
+    response = client.post(reverse("checkout_session"), {"lookup_key": "pro_monthly"})
 
     assert response.status_code == 302
-    assert response.url == 'https://checkout.stripe.com/pay/cs_test_123'
+    assert response.url == "https://checkout.stripe.com/pay/cs_test_123"
 
 
 @pytest.mark.django_db
-@mock.patch('payments.views.client')
+@mock.patch("payments.views.client")
 def test_webhook_ok(mock_client, client):
     mock_client.construct_event.return_value = {
-        'type': 'checkout.session.completed',
-        'data': {'object': {}},
+        "type": "checkout.session.completed",
+        "data": {"object": {}},
     }
 
     response = client.post(
-        reverse('webhook'),
-        data='{}',
-        content_type='application/json',
-        HTTP_STRIPE_SIGNATURE='sig',
+        reverse("webhook"),
+        data="{}",
+        content_type="application/json",
+        HTTP_STRIPE_SIGNATURE="sig",
     )
 
     assert response.status_code == 200

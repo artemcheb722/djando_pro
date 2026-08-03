@@ -2,7 +2,7 @@ DC = docker compose
 LOCALE ?= ru
 
 i18n: makemessages compilemessages
-.PHONY: build up down shell migrate restart makemigrations build-up bash test makemessages compilemessages i18n
+.PHONY: build up down shell migrate restart makemigrations build-up bash test makemessages compilemessages i18n check
 
 build:
 	${DC} build
@@ -42,3 +42,8 @@ bash:
 	docker exec -it web bash
 test:
 	${DC} exec web pytest -v
+
+check:
+	isort .
+	black .
+	flake8 .

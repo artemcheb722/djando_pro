@@ -1,130 +1,155 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load cache %}
 
 {% block title %}{% translate "Book list" %}{% endblock %}
 
 {% block content %}
     <div class="container mt-5">
         <div class="row g-3">
-
             {% for book in books %}
-                <div class="col-md-4">
-                    <div class="card border-primary h-100 shadow-sm">
-                        {% if book.image_url %}
-                            <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }}"
-                                 style="height: 220px; object-fit: contain; background-color: #f8f9fa;">
-                        {% else %}
-                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted"
-                                 style="height: 220px;">
-                                {% translate "No image" %}
-                            </div>
-                        {% endif %}
+                {% cache 900 book_card book.id book.updated_at %}
+                    <div class="col-md-4">
+                        <div class="card border-primary h-100 shadow-sm">
+                            {% if book.image_url %}
+                                <img src="{{ book.image_url }}" class="card-img-top" alt="{{ book.title }}"
+                                     style="height: 220px; object-fit: contain; background-color: #f8f9fa;">
+                            {% else %}
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted"
+                                     style="height: 220px;">
+                                    {% translate "No image" %}
+                                </div>
+                            {% endif %}
 
-                        <div class="card-body">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book.title }} - {{ book.year_of_manufacture }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{% translate "Author" %}: {{ book.author }}</h6>
+                                <p class="card-text">{{ book.description }}</p>
 
-                            <h5 class="card-title">{{ book.title }} - {{ book.year_of_manufacture }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{% translate "Author" %}: {{ book.author }}</h6>
-                            <p class="card-text">{{ book.description }}</p>
+                                <p class="mb-2">
+                                    <strong>{% translate "In stock" %}:</strong>
+                                    {% if book.stock > 0 %}
+                                        <span class="badge bg-success">{% blocktranslate count counter=book.stock %}
+                                            {{ counter }} pc.{% plural %}{{ counter }}
+                                            pcs.{% endblocktranslate %}</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">{% translate "Out of stock" %}</span>
+                                    {% endif %}
+                                </p>
 
-                            <p class="mb-2">
-                                <strong>{% translate "In stock" %}:</strong>
-                                {% if book.stock > 0 %}
-                                    <span class="badge bg-success">{% blocktranslate count counter=book.stock %}{{ counter }} pc.{% plural %}{{ counter }} pcs.{% endblocktranslate %}</span>
-                                {% else %}
-                                    <span class="badge bg-danger">{% translate "Out of stock" %}</span>
-                                {% endif %}
-                            </p>
+                                <a href="{% url 'book_detail' book.id %}"
+                                   class="btn btn-primary btn-sm">{% translate "Learn more" %}</a>
 
-                            <a href="{% url 'book_detail' book.id %}" class="btn btn-primary btn-sm">{% translate "Learn more" %}</a>
+                                <form method="POST" action="{% url 'book_delete' book.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm w-100 mb-2 d-inline-flex align-items-center justify-content-center"
+                                            title="{% translate 'Delete' %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                             stroke-linejoin="round">
+                                            <path d="M3 6h18"></path>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </button>
+                                </form>
 
+                                <button type="button" class="btn btn-warning btn-sm w-100 mb-2 d-inline-flex align-items-center justify-content-center"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editModal{{ book.id }}"
+                                        title="{% translate 'Edit' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen-icon lucide-square-pen"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+                                </button>
 
-                            <form method="POST" action="{% url 'book_delete' book.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm">{% translate "Delete" %}</button>
-                            </form>
+                                <a href="{% url 'cart_add' book.id %}"
+                                   class="btn btn-primary btn-sm  w-100 mb-2 d-inline-flex align-items-center justify-content-center"
+                                   title="{% translate 'Add to cart' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <circle cx="8" cy="21" r="1"></circle>
+                                        <circle cx="19" cy="21" r="1"></circle>
+                                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 2-1.58l1.65-7.42H5.12"></path>
+                                    </svg>
+                                </a>
 
-
-
-                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#editModal{{ book.id }}">
-                                {% translate "Edit" %}
-                            </button>
-
-                            <a href="{% url 'cart_add' book.id %}" class="btn btn-primary btn-sm">{% translate "Add to cart" %}</a>
-
-                            <div class="modal fade" id="editModal{{ book.id }}" data-bs-backdrop="static"
-                                 data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5">{% translate "Edit book" %}</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="editForm{{ book.id }}" method="POST"
-                                                  action="{% url 'book_update' book.id %}">
-                                                {% csrf_token %}
-                                                <div class="mb-3">
-                                                    <label class="form-label">{% translate "Title" %}</label>
-                                                    <input type="text" name="title" value="{{ book.title }}"
-                                                           class="form-control" required/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{% translate "Author" %}</label>
-                                                    <input type="text" name="author" value="{{ book.author }}"
-                                                           class="form-control" required/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{% translate "Year of manufacture" %}</label>
-                                                    <input type="date" name="year_of_manufacture"
-                                                           value="{{ book.year_of_manufacture|date:'Y-m-d' }}"
-                                                           class="form-control" required/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{% translate "Price" %}</label>
-                                                    <input type="number" name="price" value="{{ book.price }}"
-                                                           step="0.01" class="form-control" required/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{% translate "Description" %}</label>
-                                                    <textarea name="description" class="form-control"
-                                                              rows="3">{{ book.description }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{% translate "Stock quantity" %}</label>
-                                                    <input type="number" name="stock" value="{{ book.stock }}"
-                                                           class="form-control" required/>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label">{% translate "Category" %}</label>
-                                                    <select name="category" class="form-control" required>
-                                                        {% for category in categories %}
-                                                            <option value="{{ category.id }}"
-                                                                    {% if category.id == book.category.id %}selected{% endif %}>
-                                                                {{ category.name }}
-                                                            </option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                {% translate "Close" %}
-                                            </button>
-                                            <button type="submit" form="editForm{{ book.id }}" class="btn btn-primary">
-                                                {% translate "Save" %}
-                                            </button>
+                                <div class="modal fade" id="editModal{{ book.id }}" data-bs-backdrop="static"
+                                     data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5">{% translate "Edit book" %}</h1>
+                                                <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="editForm{{ book.id }}" method="POST"
+                                                      action="{% url 'book_update' book.id %}">
+                                                    {% csrf_token %}
+                                                    <div class="mb-3">
+                                                        <label class="form-label">{% translate "Title" %}</label>
+                                                        <input type="text" name="title" value="{{ book.title }}"
+                                                               class="form-control" required/>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">{% translate "Author" %}</label>
+                                                        <input type="text" name="author" value="{{ book.author }}"
+                                                               class="form-control" required/>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">{% translate "Year of manufacture" %}</label>
+                                                        <input type="date" name="year_of_manufacture"
+                                                               value="{{ book.year_of_manufacture|date:'Y-m-d' }}"
+                                                               class="form-control" required/>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">{% translate "Price" %}</label>
+                                                        <input type="number" name="price" value="{{ book.price }}"
+                                                               step="0.01" class="form-control" required/>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">{% translate "Description" %}</label>
+                                                        <textarea name="description" class="form-control"
+                                                                  rows="3">{{ book.description }}</textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">{% translate "Stock quantity" %}</label>
+                                                        <input type="number" name="stock" value="{{ book.stock }}"
+                                                               class="form-control" required/>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">{% translate "Category" %}</label>
+                                                        <select name="category" class="form-control" required>
+                                                            {% for category in categories %}
+                                                                <option value="{{ category.id }}"
+                                                                        {% if category.id == book.category.id %}selected{% endif %}>
+                                                                    {{ category.name }}
+                                                                </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    {% translate "Close" %}
+                                                </button>
+                                                <button type="submit" form="editForm{{ book.id }}"
+                                                        class="btn btn-primary">
+                                                    {% translate "Save" %}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-                </div>
+                {% endcache %}
             {% endfor %}
-
         </div>
     </div>
 
@@ -136,7 +161,8 @@
                     <div>
                         <h2 class="modal-title fs-5" id="bookFiltersModalLabel">{% translate "Find books" %}</h2>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="{% translate 'Close' %}"></button>
                 </div>
                 <form method="get" action="{% url 'book_list' %}">
                     <div class="modal-body">

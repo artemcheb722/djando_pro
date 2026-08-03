@@ -1,10 +1,11 @@
 import datetime
-import pytest
 from decimal import Decimal
+
+import pytest
 from django.urls import reverse
 
-from Book.models import Book, Category, Order, OrderItem
 from Book.forms import BookSeachForm, CheckoutForm
+from Book.models import Book, Category, Order, OrderItem
 
 pytestmark = pytest.mark.django_db
 
@@ -17,21 +18,27 @@ def category():
 @pytest.fixture
 def book(category):
     return Book.objects.create(
-        title="lgkgk", author="fwafwf",
+        title="lgkgk",
+        author="fwafwf",
         year_of_manufacture=datetime.date(1965, 1, 1),
-        price=Decimal("350.00"), stock=10, category=category,
+        price=Decimal("350.00"),
+        stock=10,
+        category=category,
     )
 
 
 @pytest.fixture
 def user(django_user_model):
-    return django_user_model.objects.create_user(username="testuser", password="pass123")
+    return django_user_model.objects.create_user(
+        username="testuser", password="pass123"
+    )
 
 
 @pytest.fixture
 def order(user):
-    return Order.objects.create(user=user, total_price=Decimal("350.00"), post_office_number="12345")
-
+    return Order.objects.create(
+        user=user, total_price=Decimal("350.00"), post_office_number="12345"
+    )
 
 
 def test_category_str(category):
@@ -43,8 +50,13 @@ def test_book_str(book):
 
 
 def test_book_default_stock_zero(category):
-    b = Book.objects.create(title="dwdwad", author="wadwad", year_of_manufacture=datetime.date(2000, 1, 1),
-                            price=Decimal("10.00"), category=category)
+    b = Book.objects.create(
+        title="dwdwad",
+        author="wadwad",
+        year_of_manufacture=datetime.date(2000, 1, 1),
+        price=Decimal("10.00"),
+        category=category,
+    )
     assert b.stock == 0
 
 
@@ -57,10 +69,10 @@ def test_order_item_str(order, book):
     assert str(item) == f"2 of {book.title} in order {order.id}"
 
 
-
-
 def test_book_search_form_valid(category):
-    form = BookSeachForm(data={"title": "awdw", "author": "fwafawf", "category": category.pk})
+    form = BookSeachForm(
+        data={"title": "awdw", "author": "fwafawf", "category": category.pk}
+    )
     assert form.is_valid()
 
 
@@ -74,13 +86,16 @@ def test_checkout_form_valid():
 
 
 def test_checkout_form_invalid_payment_method():
-    form = CheckoutForm(data={"payment_method": "bitcoin", "post_office_number": "12345"})
+    form = CheckoutForm(
+        data={"payment_method": "bitcoin", "post_office_number": "12345"}
+    )
     assert not form.is_valid()
 
 
 def test_checkout_form_missing_post_office():
     form = CheckoutForm(data={"payment_method": "card", "post_office_number": ""})
     assert not form.is_valid()
+
 
 def test_book_list_status_ok(client, book):
     assert client.get(reverse("book_list")).status_code == 200
@@ -135,8 +150,12 @@ def test_checkout_post_creates_order(client, user, book):
     session["cart"] = {str(book.pk): 1}
     session.save()
 
-    response = client.post(reverse("checkout"), {
-        "payment_method": "card", "post_office_number": "54321",
-    })
+    response = client.post(
+        reverse("checkout"),
+        {
+            "payment_method": "card",
+            "post_office_number": "54321",
+        },
+    )
     assert response.status_code == 302
     assert Order.objects.filter(user=user).exists()

@@ -16,26 +16,26 @@ class CategoryModelTest(TestCase):
 
     def setUp(self):
         # Generated with AI, reviewed and modified
-        self.category = Category.objects.create(name='Fantasy', slug='fantasy')
+        self.category = Category.objects.create(name="Fantasy", slug="fantasy")
 
     def test_str_representation(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(str(self.category), 'Fantasy')
+        self.assertEqual(str(self.category), "Fantasy")
 
     def test_category_created_with_correct_fields(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(self.category.name, 'Fantasy')
-        self.assertEqual(self.category.slug, 'fantasy')
+        self.assertEqual(self.category.name, "Fantasy")
+        self.assertEqual(self.category.slug, "fantasy")
 
     def test_slug_must_be_unique(self):
         # Generated with AI, reviewed and modified
         with self.assertRaises(IntegrityError):
             with transaction.atomic():
-                Category.objects.create(name='Fantasy 2', slug='fantasy')
+                Category.objects.create(name="Fantasy 2", slug="fantasy")
 
     def test_category_can_be_retrieved_by_slug(self):
         # Generated with AI, reviewed and modified
-        fetched = Category.objects.get(slug='fantasy')
+        fetched = Category.objects.get(slug="fantasy")
         self.assertEqual(fetched.pk, self.category.pk)
 
 
@@ -44,36 +44,36 @@ class BookModelTest(TestCase):
 
     def setUp(self):
         # Generated with AI, reviewed and modified
-        self.category = Category.objects.create(name='Sci-Fi', slug='sci-fi')
+        self.category = Category.objects.create(name="Sci-Fi", slug="sci-fi")
         self.book = Book.objects.create(
-            title='Dune',
-            author='Frank Herbert',
+            title="Dune",
+            author="Frank Herbert",
             year_of_manufacture=date(1965, 8, 1),
-            price=Decimal('19.99'),
-            description='A science fiction novel.',
+            price=Decimal("19.99"),
+            description="A science fiction novel.",
             stock=5,
             category=self.category,
         )
 
     def test_str_representation(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(str(self.book), f'Book {self.book.id} - Dune')
+        self.assertEqual(str(self.book), f"Book {self.book.id} - Dune")
 
     def test_book_fields_saved_correctly(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(self.book.title, 'Dune')
-        self.assertEqual(self.book.author, 'Frank Herbert')
-        self.assertEqual(self.book.price, Decimal('19.99'))
+        self.assertEqual(self.book.title, "Dune")
+        self.assertEqual(self.book.author, "Frank Herbert")
+        self.assertEqual(self.book.price, Decimal("19.99"))
         self.assertEqual(self.book.stock, 5)
         self.assertEqual(self.book.category, self.category)
 
     def test_default_stock_is_zero(self):
         # Generated with AI, reviewed and modified
         book = Book.objects.create(
-            title='No Stock Book',
-            author='Some Author',
+            title="No Stock Book",
+            author="Some Author",
             year_of_manufacture=date(2020, 1, 1),
-            price=Decimal('9.99'),
+            price=Decimal("9.99"),
             category=self.category,
         )
         self.assertEqual(book.stock, 0)
@@ -81,10 +81,10 @@ class BookModelTest(TestCase):
     def test_description_can_be_blank(self):
         # Generated with AI, reviewed and modified
         book = Book.objects.create(
-            title='No Description',
-            author='Some Author',
+            title="No Description",
+            author="Some Author",
             year_of_manufacture=date(2021, 1, 1),
-            price=Decimal('5.00'),
+            price=Decimal("5.00"),
             category=self.category,
         )
         self.assertIsNone(book.description)
@@ -101,10 +101,10 @@ class BookModelTest(TestCase):
         with self.assertRaises(IntegrityError):
             with transaction.atomic():
                 Book.objects.create(
-                    title='Orphan Book',
-                    author='Nobody',
+                    title="Orphan Book",
+                    author="Nobody",
                     year_of_manufacture=date(2022, 1, 1),
-                    price=Decimal('3.00'),
+                    price=Decimal("3.00"),
                     category=None,
                 )
 
@@ -114,28 +114,28 @@ class OrderModelTest(TestCase):
 
     def setUp(self):
         # Generated with AI, reviewed and modified
-        self.user = User.objects.create_user(username='reader', password='pass12345')
+        self.user = User.objects.create_user(username="reader", password="pass12345")
         self.order = Order.objects.create(
             user=self.user,
-            total_price=Decimal('49.98'),
-            post_office_number='101',
+            total_price=Decimal("49.98"),
+            post_office_number="101",
         )
 
     def test_str_representation(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(str(self.order), f'Order {self.order.id} by reader')
+        self.assertEqual(str(self.order), f"Order {self.order.id} by reader")
 
     def test_default_payment_method_is_card(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(self.order.payment_method, 'card')
+        self.assertEqual(self.order.payment_method, "card")
 
     def test_default_payment_status_is_unpaid(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(self.order.payment_status, 'unpaid')
+        self.assertEqual(self.order.payment_status, "unpaid")
 
     def test_default_status_is_pending(self):
         # Generated with AI, reviewed and modified
-        self.assertEqual(self.order.status, 'pending')
+        self.assertEqual(self.order.status, "pending")
 
     def test_created_at_is_set_automatically(self):
         # Generated with AI, reviewed and modified
@@ -149,10 +149,10 @@ class OrderModelTest(TestCase):
 
     def test_order_status_can_be_updated(self):
         # Generated with AI, reviewed and modified
-        self.order.status = 'completed'
+        self.order.status = "completed"
         self.order.save()
         self.order.refresh_from_db()
-        self.assertEqual(self.order.status, 'completed')
+        self.assertEqual(self.order.status, "completed")
 
 
 class OrderItemModelTest(TestCase):
@@ -160,20 +160,20 @@ class OrderItemModelTest(TestCase):
 
     def setUp(self):
         # Generated with AI, reviewed and modified
-        self.user = User.objects.create_user(username='buyer', password='pass12345')
-        self.category = Category.objects.create(name='Drama', slug='drama')
+        self.user = User.objects.create_user(username="buyer", password="pass12345")
+        self.category = Category.objects.create(name="Drama", slug="drama")
         self.book = Book.objects.create(
-            title='Hamlet',
-            author='William Shakespeare',
+            title="Hamlet",
+            author="William Shakespeare",
             year_of_manufacture=date(1603, 1, 1),
-            price=Decimal('12.50'),
+            price=Decimal("12.50"),
             stock=10,
             category=self.category,
         )
         self.order = Order.objects.create(
             user=self.user,
-            total_price=Decimal('25.00'),
-            post_office_number='202',
+            total_price=Decimal("25.00"),
+            post_office_number="202",
         )
         self.order_item = OrderItem.objects.create(
             order=self.order,
@@ -185,7 +185,7 @@ class OrderItemModelTest(TestCase):
         # Generated with AI, reviewed and modified
         self.assertEqual(
             str(self.order_item),
-            f'2 of Hamlet in order {self.order.id}',
+            f"2 of Hamlet in order {self.order.id}",
         )
 
     def test_order_item_fields_saved_correctly(self):
@@ -219,10 +219,10 @@ class OrderItemModelTest(TestCase):
     def test_order_can_have_multiple_items(self):
         # Generated with AI, reviewed and modified
         second_book = Book.objects.create(
-            title='Macbeth',
-            author='William Shakespeare',
+            title="Macbeth",
+            author="William Shakespeare",
             year_of_manufacture=date(1606, 1, 1),
-            price=Decimal('11.00'),
+            price=Decimal("11.00"),
             category=self.category,
         )
         OrderItem.objects.create(order=self.order, book=second_book, quantity=1)

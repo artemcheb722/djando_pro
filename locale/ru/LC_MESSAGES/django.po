@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-04 15:40+0300\n"
+"POT-Creation-Date: 2026-07-25 19:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,407 +20,524 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\Book\forms.py:11 .\Book\templates\base.html:51
-#: .\Book\templates\book.html:58 .\Book\templates\book_detail.html:23
+#: Book/forms.py:11 Book/templates/base.html:95 Book/templates/book.html:68
+#: Book/templates/book_detail.html:33
 msgid "Title"
 msgstr "Название"
 
-#: .\Book\forms.py:12 .\Book\templates\base.html:56
-#: .\Book\templates\book.html:16 .\Book\templates\book.html:63
-#: .\Book\templates\book_detail.html:24 .\Book\templates\cart.html:11
-#: .\Book\templates\checkout.html:11 .\Book\templates\order_detail.html:41
+#: Book/forms.py:12 Book/templates/base.html:100 Book/templates/book.html:26
+#: Book/templates/book.html:73 Book/templates/book_detail.html:34
+#: Book/templates/cart.html:22 Book/templates/checkout.html:17
+#: Book/templates/order_detail.html:41
 msgid "Author"
 msgstr "Автор"
 
-#: .\Book\forms.py:13 .\Book\templates\base.html:82
-#: .\Book\templates\book.html:89 .\Book\templates\book_detail.html:25
-#: .\Book\templates\category_detail.html:9
+#: Book/forms.py:13 Book/templates/base.html:127 Book/templates/book.html:99
+#: Book/templates/book_detail.html:35 Book/templates/category_detail.html:9
 msgid "Category"
 msgstr "Категория"
 
-#: .\Book\forms.py:21
+#: Book/forms.py:21
 msgid "Payment method"
 msgstr "Способ оплаты"
 
-#: .\Book\forms.py:22
+#: Book/forms.py:22
 msgid "Post office number"
 msgstr "Номер почтового отделения"
 
-#: .\Book\models.py:6
+#: Book/models.py:6
 #, fuzzy
 #| msgid "Book store"
 msgid "Book title"
 msgstr "Книжный магазин"
 
-#: .\Book\models.py:7
+#: Book/models.py:7
 #, fuzzy
 #| msgid "Out of stock"
 msgid "Author of the book"
 msgstr "Нет в наличии"
 
-#: .\Book\models.py:9
+#: Book/models.py:9
 #, fuzzy
 #| msgid "Book Store"
 msgid "Book price"
 msgstr "Книжный магазин"
 
-#: .\Book\models.py:10
+#: Book/models.py:10
 #, fuzzy
 #| msgid "Description"
 msgid "Book description"
 msgstr "Описание"
 
-#: .\Book\models.py:11 .\Book\templates\book_detail.html:35
+#: Book/models.py:11 Book/templates/book_detail.html:45
 #, fuzzy
 #| msgid "In stock"
 msgid "Stock"
 msgstr "В наличии"
 
-#: .\Book\models.py:19
+#: Book/models.py:13 Book/templates/base.html:137
+#, fuzzy
+#| msgid "Book Store"
+msgid "Book cover image"
+msgstr "Книжный магазин"
+
+#: Book/models.py:15
+msgid "Updated at"
+msgstr "Дата обновления"
+
+#: Book/models.py:21
 #, fuzzy
 #| msgid "Category"
 msgid "Category name"
 msgstr "Категория"
 
-#: .\Book\models.py:30
+#: Book/models.py:32
 msgid "Card"
 msgstr "Оплата картой"
 
-#: .\Book\models.py:30
+#: Book/models.py:32
 msgid "Cash"
 msgstr "Оплата наличными"
 
-#: .\Book\models.py:31 .\Book\templates\order_detail.html:26
-#: .\Book\templates\user_orders.html:43
+#: Book/models.py:33 Book/templates/order_detail.html:26
+#: Book/templates/user_orders.html:43
 msgid "Paid"
 msgstr "Оплачено"
 
-#: .\Book\models.py:31
+#: Book/models.py:33
 msgid "Unpaid"
 msgstr "Не оплачено"
 
-#: .\Book\models.py:32 .\Book\templates\order_detail.html:16
-#: .\Book\templates\user_orders.html:34
+#: Book/models.py:34 Book/templates/order_detail.html:16
+#: Book/templates/user_orders.html:34
 msgid "Pending"
 msgstr "В ожидании"
 
-#: .\Book\models.py:32 .\Book\templates\order_detail.html:18
-#: .\Book\templates\user_orders.html:36
+#: Book/models.py:34 Book/templates/order_detail.html:18
+#: Book/templates/user_orders.html:36
 msgid "Completed"
 msgstr "Завершено"
 
-#: .\Book\models.py:32 .\Book\templates\order_detail.html:20
-#: .\Book\templates\user_orders.html:38
+#: Book/models.py:34 Book/templates/order_detail.html:20
+#: Book/templates/user_orders.html:38
 msgid "Canceled"
 msgstr "Отменено"
 
-#: .\Book\templates\base.html:8
+#: Book/templates/base.html:10
 msgid "Book Store"
 msgstr "Книжный магазин"
 
-#: .\Book\templates\base.html:15
+#: Book/templates/base.html:19
 msgid "Book store"
 msgstr "Книжный магазин"
 
-#: .\Book\templates\base.html:17 .\Book\templates\base.html:93
-msgid "Add book"
-msgstr "Добавить книгу"
-
-#: .\Book\templates\base.html:21 .\Book\templates\checkout.html:4
-msgid "Cart"
-msgstr "Корзина"
-
-#: .\Book\templates\base.html:24
-msgid "Logout"
-msgstr "Выйти"
-
-#: .\Book\templates\base.html:26 .\users\templates\login.html:12
-msgid "Login"
-msgstr "Войти"
-
-#: .\Book\templates\base.html:27
-msgid "Register"
-msgstr "Зарегистрироваться"
-
-#: .\Book\templates\base.html:30
+#: Book/templates/base.html:40
 msgid "Search books"
 msgstr "Поиск книг"
 
-#: .\Book\templates\base.html:31
+#: Book/templates/base.html:41
 msgid "Search"
 msgstr "Поиск"
 
-#: .\Book\templates\base.html:43
+#: Book/templates/base.html:51
+msgid "Filters"
+msgstr "Фильтры"
+
+#: Book/templates/base.html:57 Book/templates/base.html:144
+msgid "Add book"
+msgstr "Добавить книгу"
+
+#: Book/templates/base.html:61 Book/templates/cart.html:5
+msgid "Cart"
+msgstr "Корзина"
+
+#: Book/templates/base.html:65
+#, fuzzy
+#| msgid "You have no orders yet."
+msgid "Your previous orders"
+msgstr "У вас пока нет заказов."
+
+#: Book/templates/base.html:69
+msgid "Logout"
+msgstr "Выйти"
+
+#: Book/templates/base.html:71 users/templates/login.html:12
+#: users/templates/login.html:15
+msgid "Login"
+msgstr "Войти"
+
+#: Book/templates/base.html:73 users/templates/register.html:12
+#: users/templates/register.html:15
+msgid "Register"
+msgstr "Зарегистрироваться"
+
+#: Book/templates/base.html:87
 msgid "Add new book"
 msgstr "Добавить новую книгу"
 
-#: .\Book\templates\base.html:61 .\Book\templates\book.html:68
+#: Book/templates/base.html:106 Book/templates/book.html:78
 msgid "Year of manufacture"
 msgstr "Год выпуска"
 
-#: .\Book\templates\base.html:67 .\Book\templates\book.html:74
-#: .\Book\templates\book_detail.html:32
+#: Book/templates/base.html:112 Book/templates/book.html:84
+#: Book/templates/book_detail.html:42
 msgid "Price"
 msgstr "Цена"
 
-#: .\Book\templates\base.html:72 .\Book\templates\book.html:79
-#: .\Book\templates\book_detail.html:26
+#: Book/templates/base.html:117 Book/templates/book.html:89
+#: Book/templates/book_detail.html:36
 msgid "Description"
 msgstr "Описание"
 
-#: .\Book\templates\base.html:77 .\Book\templates\book.html:84
+#: Book/templates/base.html:122 Book/templates/book.html:94
 msgid "Stock quantity"
 msgstr "Количество на складе"
 
-#: .\Book\templates\base.html:84
+#: Book/templates/base.html:129
 msgid "Select a category"
 msgstr "Выберите категорию"
 
-#: .\Book\templates\base.html:92 .\Book\templates\book.html:103
+#: Book/templates/base.html:143 Book/templates/book.html:113
+#: Book/templates/book.html:139
 msgid "Close"
 msgstr "Закрыть"
 
-#: .\Book\templates\book.html:4
+#: Book/templates/book.html:5
 #, fuzzy
 #| msgid "Book store"
 msgid "Book list"
 msgstr "Книжный магазин"
 
-#: .\Book\templates\book.html:20
+#: Book/templates/book.html:20 Book/templates/book_detail.html:29
+#: Book/templates/cart.html:18
+#, fuzzy
+#| msgid "No items"
+msgid "No image"
+msgstr "Нет товаров"
+
+#: Book/templates/book.html:30
 msgid "In stock"
 msgstr "В наличии"
 
-#: .\Book\templates\book.html:22
+#: Book/templates/book.html:32
 #, python-format
-msgid "%(counter)s pc."
+msgid ""
+"\n"
+"                                %(counter)s pc."
 msgid_plural "%(counter)s pcs."
-msgstr[0] "%(counter)s шт."
-msgstr[1] "%(counter)s шт."
-msgstr[2] "%(counter)s шт."
-msgstr[3] "%(counter)s шт."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
-#: .\Book\templates\book.html:24
+#: Book/templates/book.html:35
 msgid "Out of stock"
 msgstr "Нет в наличии"
 
-#: .\Book\templates\book.html:28
+#: Book/templates/book.html:40
 msgid "Learn more"
 msgstr "Подробнее"
 
-#: .\Book\templates\book.html:33 .\Book\templates\cart.html:18
+#: Book/templates/book.html:44 Book/templates/cart.html:31
+#: Book/templates/cart.html:32
 msgid "Delete"
 msgstr "Удалить"
 
-#: .\Book\templates\book.html:40
+#: Book/templates/book.html:49
 msgid "Edit"
 msgstr "Редактировать"
 
-#: .\Book\templates\book.html:43
+#: Book/templates/book.html:53
 msgid "Add to cart"
 msgstr "Добавить в корзину"
 
-#: .\Book\templates\book.html:50
+#: Book/templates/book.html:60
 #, fuzzy
 #| msgid "Add book"
 msgid "Edit book"
 msgstr "Редактировать книгу"
 
-#: .\Book\templates\book.html:106
+#: Book/templates/book.html:116
 msgid "Save"
 msgstr "Сохранить"
 
-#: .\Book\templates\book_detail.html:19 .\Book\templates\cart.html:47
-#: .\Book\templates\checkout.html:44
+#: Book/templates/book.html:136
+#, fuzzy
+#| msgid "Add book"
+msgid "Find books"
+msgstr "Добавить книгу"
+
+#: Book/templates/book.html:143
+msgid "Choose the parameters you need and we will show matching books."
+msgstr "Выберите необходимые параметры, и мы покажем подходящие книги."
+
+#: Book/templates/book.html:154
+msgid "Reset"
+msgstr "Сбросить"
+
+#: Book/templates/book.html:155
+msgid "Apply filters"
+msgstr "Применить фильтры"
+
+#: Book/templates/book_detail.html:19 Book/templates/cart.html:70
+#: Book/templates/checkout.html:54
 msgid "Back to catalog"
 msgstr "Назад к каталогу"
 
-#: .\Book\templates\cart.html:10 .\Book\templates\checkout.html:10
-#: .\Book\templates\order_detail.html:40
+#: Book/templates/book_detail.html:50
+msgid "Average rating"
+msgstr "Средний рейтинг"
+
+#: Book/templates/book_detail.html:52
+msgid "reviews"
+msgstr "Отзывы"
+
+#: Book/templates/book_detail.html:54
+msgid "No ratings yet"
+msgstr "Нет пока оценок"
+
+#: Book/templates/book_detail.html:58
+msgid "Add a Review"
+msgstr "Оставить отзыв"
+
+#: Book/templates/book_detail.html:62
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: Book/templates/book_detail.html:64
+#, fuzzy
+#| msgid "Select a category"
+msgid "Select rating"
+msgstr "Выберите категорию"
+
+#: Book/templates/book_detail.html:73
+msgid "Your Review"
+msgstr "Ваш отзыв"
+
+#: Book/templates/book_detail.html:76
+msgid "Submit Review"
+msgstr "Отправить отзыв"
+
+#: Book/templates/book_detail.html:81
+msgid "Reviews"
+msgstr "Отзывы"
+
+#: Book/templates/book_detail.html:86
+#, fuzzy
+#| msgid "Username"
+msgid "User"
+msgstr "Имя пользователя"
+
+#: Book/templates/book_detail.html:95
+msgid "No reviews yet."
+msgstr "Нет пока отзывов."
+
+#: Book/templates/cart.html:21 Book/templates/checkout.html:16
+#: Book/templates/order_detail.html:40
 #, fuzzy
 #| msgid "Book store"
 msgid "Book"
 msgstr "Книжный магазин"
 
-#: .\Book\templates\cart.html:12
+#: Book/templates/cart.html:23
 msgid "Price per one Book"
 msgstr "Цена за одну книгу"
 
-#: .\Book\templates\cart.html:13 .\Book\templates\checkout.html:13
-#: .\Book\templates\order_detail.html:43
+#: Book/templates/cart.html:24 Book/templates/checkout.html:19
+#: Book/templates/order_detail.html:43
 #, fuzzy
 #| msgid "Stock quantity"
 msgid "Quantity"
 msgstr "Количество на складе"
 
-#: .\Book\templates\cart.html:14
+#: Book/templates/cart.html:25
 msgid "Sum"
 msgstr "Сумма"
 
-#: .\Book\templates\cart.html:27
+#: Book/templates/cart.html:50
 msgid "Order total"
 msgstr "Общая стоимость заказа"
 
-#: .\Book\templates\cart.html:28
-msgid "Total price"
-msgstr "Общая стоимость"
-
-#: .\Book\templates\cart.html:33
+#: Book/templates/cart.html:56
 msgid "Proceed to Checkout"
 msgstr "Перейти к оформлению заказа"
 
-#: .\Book\templates\cart.html:39
+#: Book/templates/cart.html:62
 msgid "Empty the cart"
 msgstr "Очистить корзину"
 
-#: .\Book\templates\cart.html:43
+#: Book/templates/cart.html:66
 msgid "The cart is empty"
 msgstr "Корзина пустая"
 
-#: .\Book\templates\category_detail.html:10
+#: Book/templates/category_detail.html:10
 msgid "Books found"
 msgstr "Найдено книг"
 
-#: .\Book\templates\category_detail.html:14
+#: Book/templates/category_detail.html:14
 #, fuzzy
 #| msgid "Description"
 msgid "No description"
 msgstr "Описание"
 
-#: .\Book\templates\category_detail.html:24
-#: .\Book\templates\order_detail.html:32 .\Book\templates\order_detail.html:52
-#: .\Book\templates\user_orders.html:12 .\Book\templates\user_orders.html:48
+#: Book/templates/category_detail.html:24 Book/templates/order_detail.html:32
+#: Book/templates/order_detail.html:52 Book/templates/user_orders.html:12
+#: Book/templates/user_orders.html:48
 msgid "UAH"
 msgstr "ГРН"
 
-#: .\Book\templates\category_detail.html:26
-#: .\Book\templates\user_orders.html:51
+#: Book/templates/category_detail.html:26 Book/templates/user_orders.html:51
 msgid "Details"
 msgstr "Детали"
 
-#: .\Book\templates\category_detail.html:34
+#: Book/templates/category_detail.html:34
 msgid "There are no books in this category yet."
 msgstr "В этой категории пока нет книг."
 
-#: .\Book\templates\checkout.html:12
+#: Book/templates/checkout.html:5
+msgid "Checkout"
+msgstr "Оформление заказа"
+
+#: Book/templates/checkout.html:18
 #, fuzzy
 #| msgid "Price per one Book"
 msgid "Price per book"
 msgstr "Цена за одну книгу"
 
-#: .\Book\templates\checkout.html:22
+#: Book/templates/checkout.html:25
+#, fuzzy
+#| msgid "Details"
+msgid "Delivery details"
+msgstr "Детали"
+
+#: Book/templates/checkout.html:31
 #, fuzzy
 #| msgid "Total price"
 msgid "Total for order"
 msgstr "Общая стоимость"
 
-#: .\Book\templates\checkout.html:31
+#: Book/templates/checkout.html:34
 msgid "Place order"
 msgstr "Оформить заказ"
 
-#: .\Book\templates\checkout.html:36
+#: Book/templates/checkout.html:36
 #, fuzzy
 #| msgid "Back to catalog"
 msgid "Back to cart"
 msgstr "Назад к каталогу"
 
-#: .\Book\templates\checkout.html:40
+#: Book/templates/checkout.html:44
+msgid "Secure checkout"
+msgstr "Безопасное оформление заказа"
+
+#: Book/templates/checkout.html:51
 #, fuzzy
 #| msgid "The cart is empty"
 msgid "Cart is empty"
 msgstr "Корзина пустая"
 
-#: .\Book\templates\order_detail.html:4 .\Book\templates\order_detail.html:9
+#: Book/templates/order_detail.html:4 Book/templates/order_detail.html:9
 #, fuzzy
 #| msgid "Order total"
 msgid "Order"
 msgstr "Общая стоимость заказа"
 
-#: .\Book\templates\order_detail.html:13 .\Book\templates\user_orders.html:20
+#: Book/templates/order_detail.html:13 Book/templates/user_orders.html:20
 msgid "Date"
 msgstr "Дата"
 
-#: .\Book\templates\order_detail.html:14 .\Book\templates\user_orders.html:21
+#: Book/templates/order_detail.html:14 Book/templates/user_orders.html:21
 msgid "Status"
 msgstr "Статус"
 
-#: .\Book\templates\order_detail.html:23 .\Book\templates\user_orders.html:22
+#: Book/templates/order_detail.html:23 Book/templates/user_orders.html:22
 #, fuzzy
 #| msgid "Payment method"
 msgid "Payment"
 msgstr "Способ оплаты"
 
-#: .\Book\templates\order_detail.html:28 .\Book\templates\user_orders.html:45
+#: Book/templates/order_detail.html:28 Book/templates/user_orders.html:45
 msgid "Not paid"
 msgstr "Не оплачено"
 
-#: .\Book\templates\order_detail.html:31
+#: Book/templates/order_detail.html:31
 #, fuzzy
 #| msgid "Post office number"
 msgid "Post office branch"
 msgstr "Номер почтового отделения"
 
-#: .\Book\templates\order_detail.html:32 .\Book\templates\user_orders.html:23
+#: Book/templates/order_detail.html:32 Book/templates/user_orders.html:23
 #, fuzzy
 #| msgid "Total price"
 msgid "Total"
 msgstr "Общая стоимость"
 
-#: .\Book\templates\order_detail.html:36
+#: Book/templates/order_detail.html:36
 msgid "Items in order"
 msgstr "Товары в заказе"
 
-#: .\Book\templates\order_detail.html:42
+#: Book/templates/order_detail.html:42
 #, fuzzy
 #| msgid "Price per one Book"
 msgid "Price per unit"
 msgstr "Цена за одну книгу"
 
-#: .\Book\templates\order_detail.html:44
+#: Book/templates/order_detail.html:44
 msgid "Subtotal"
 msgstr "Подытог"
 
-#: .\Book\templates\order_detail.html:58
+#: Book/templates/order_detail.html:58
 msgid "No items"
 msgstr "Нет товаров"
 
-#: .\Book\templates\order_detail.html:64
+#: Book/templates/order_detail.html:64
 #, fuzzy
 #| msgid "Back to catalog"
 msgid "Back to my orders"
 msgstr "Назад к каталогу"
 
-#: .\Book\templates\user_orders.html:4 .\Book\templates\user_orders.html:9
+#: Book/templates/user_orders.html:4 Book/templates/user_orders.html:9
 #, fuzzy
 #| msgid "Place order"
 msgid "My orders"
 msgstr "Мои заказы"
 
-#: .\Book\templates\user_orders.html:11
+#: Book/templates/user_orders.html:11
 #, fuzzy
 #| msgid "Total price"
 msgid "Total orders"
 msgstr "Общая стоимость"
 
-#: .\Book\templates\user_orders.html:12
+#: Book/templates/user_orders.html:12
 msgid "Total amount"
 msgstr "Общая сумма"
 
-#: .\Book\templates\user_orders.html:59
+#: Book/templates/user_orders.html:59
 msgid "You have no orders yet."
 msgstr "У вас пока нет заказов."
 
-#: .\users\forms.py:13
+#: users/forms.py:13
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: .\users\forms.py:14
+#: users/forms.py:14
 msgid "Password"
 msgstr "пароль"
 
-#: .\users\forms.py:15
+#: users/forms.py:15
 msgid "Confirm password"
 msgstr "Подтвердите пароль"
 
-#: .\users\templates\register.html:12
-msgid "Sign up"
-msgstr "Зарегестрироваться"
+#, python-format
+#~ msgid "%(counter)s pc."
+#~ msgid_plural "%(counter)s pcs."
+#~ msgstr[0] "%(counter)s шт."
+#~ msgstr[1] "%(counter)s шт."
+#~ msgstr[2] "%(counter)s шт."
+#~ msgstr[3] "%(counter)s шт."
+
+#~ msgid "Total price"
+#~ msgstr "Общая стоимость"
+
+#~ msgid "Sign up"
+#~ msgstr "Зарегестрироваться"
