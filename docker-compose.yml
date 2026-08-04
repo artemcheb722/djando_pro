@@ -69,6 +69,7 @@ services:
     volumes:
       - .:/app
       - media_files:/app/media
+    entrypoint: ["sh", "-c", "chmod +x /app/docker-entrypoint.sh && celery -A mysite worker -l info"]
     depends_on:
       redis:
         condition: service_healthy
@@ -95,6 +96,7 @@ services:
       - .env
     volumes:
       - .:/app
+    entrypoint: ["sh", "-c", "chmod +x /app/docker-entrypoint.sh && celery -A mysite beat -l info"]
     depends_on:
       redis:
         condition: service_healthy
