@@ -1,6 +1,19 @@
 # djando_pro
 
+
+
+![CI](https://github.com/artemcheb/book-store/actions/workflows/ci.yml/badge.svg)
+![Tests](https://github.com/artemcheb/book-store/actions/workflows/tests.yml/badge.svg)
+![Docker](https://github.com/artemcheb/book-store/actions/workflows/docker-publish.yml/badge.svg)
+![Coverage](https://codecov.io/gh/artemcheb/book-store/branch/main/graph/badge.svg)
+
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Django](https://img.shields.io/badge/Django-5.1-green)
+![Docker](https://img.shields.io/badge/Docker-enabled-2496ED)
+
 Django bookstore app: catalog, cart, checkout, payments via Stripe, registration/login.
+
+
 
 ## Structure
 
