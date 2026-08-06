@@ -41,6 +41,7 @@ from payments.views import (
     checkout_success_page,
 )
 from users.views import login_view, logout_view, register_view
+from health_check import health_check_foo
 
 router = DefaultRouter()
 router.register("books", BookViewSet, basename="book")
@@ -52,6 +53,7 @@ router.register("reviews", BookReviewViewSet, basename="review")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("health-check/", health_check_foo, name="health_check"),
     path("api/", include(router.urls)),
     path("webhook/", WebhookView.as_view(), name="webhook"),
     path(
