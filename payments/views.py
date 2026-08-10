@@ -5,9 +5,9 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views import View
 
-from mysite import settings
+from mysite.settings import base
 
-client = stripe.StripeClient(settings.STRIPE_SECRET_KEY)
+client = stripe.StripeClient(base.STRIPE_SECRET_KEY)
 
 YOUR_DOMAIN = "http://localhost:8000"
 

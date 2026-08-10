@@ -9,4 +9,3 @@ python manage.py collectstatic --noinput
 
 echo "Starting Django server..."
 exec "$@"
-
