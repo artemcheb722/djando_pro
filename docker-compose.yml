@@ -25,6 +25,8 @@ services:
       start_period: 40s
     networks:
       - main_network
+    environment:
+      - PYTHONUNBUFFERED=1
 
   database:
     image: postgres:16-alpine

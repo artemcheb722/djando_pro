@@ -25,3 +25,4 @@ isort
 celery
 gunicorn
 whitenoise
+requests
