@@ -71,7 +71,7 @@ services:
     volumes:
       - .:/app
       - media_files:/app/media
-    entrypoint: ["sh", "-c", "chmod +x /app/docker-entrypoint.sh && celery -A mysite worker -l info"]
+    entrypoint: [ "sh", "-c", "chmod +x /app/docker-entrypoint.sh && celery -A mysite worker -l info" ]
     depends_on:
       redis:
         condition: service_healthy
@@ -98,7 +98,7 @@ services:
       - .env
     volumes:
       - .:/app
-    entrypoint: ["sh", "-c", "chmod +x /app/docker-entrypoint.sh && celery -A mysite beat -l info"]
+    entrypoint: [ "sh", "-c", "chmod +x /app/docker-entrypoint.sh && celery -A mysite beat -l info" ]
     depends_on:
       redis:
         condition: service_healthy
@@ -130,6 +130,20 @@ services:
       retries: 3
     networks:
       - main_network
+
+  project-b-web:
+    build: ./project_b
+    container_name: project-b-web
+    hostname: project-b-web
+    restart: always
+    env_file:
+      - ./project_b/.env
+    ports:
+      - "8001:8000"
+    networks:
+        - main_network
+    environment:
+      - PYTHONUNBUFFERED=1
 
 
 volumes:

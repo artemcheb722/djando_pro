@@ -20,7 +20,7 @@ def invalidate_review_cache(sender, instance, **kwargs):
 def notify_analytics(sender, instance, created, **kwargs):
     if created:
         try:
-            requests.post("http://host.docker.internal:8001/api/purchases/", json={
+            requests.post("http://project-b-web:8000/api/purchases/", json={
                 "user_id": instance.user_id,
                 "order_id": instance.id,
                 "amount": str(instance.total_price),

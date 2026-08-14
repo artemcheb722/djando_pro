@@ -2,6 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Sum, Count
 from .models import UserPurchase
+from django.shortcuts import render
+
+def dashboard_view(request):
+    stats = (
+        UserPurchase.objects.values("user_id")
+        .annotate(total_spent=Sum("amount"), orders_count=Count("id"))
+        .order_by("-total_spent")
+    )
+    return render(request, "dashboard.html", {"stats": stats})
 
 class RecordPurchaseView(APIView):
     def post(self, request):
